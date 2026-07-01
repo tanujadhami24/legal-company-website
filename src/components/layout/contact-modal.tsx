@@ -54,7 +54,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       />
 
       {/* Modal Container */}
-      <div className="relative w-full max-w-3xl bg-white dark:bg-[#002f45] rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-[#004d73]/40 flex flex-col md:flex-row transform scale-100 transition-all duration-300 z-10">
+      <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto md:overflow-hidden bg-white dark:bg-[#002f45] rounded-3xl shadow-2xl border border-slate-200 dark:border-[#004d73]/40 flex flex-col md:flex-row transform scale-100 transition-all duration-300 z-10">
         
         {/* Close Button */}
         <button 
@@ -65,7 +65,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         </button>
 
         {/* Left Side: Contact Information Panel */}
-        <div className="w-full md:w-[40%] bg-gradient-to-br from-[#003e5c] to-[#002f45] p-8 md:p-10 text-white flex flex-col justify-between relative overflow-hidden">
+        <div className="w-full md:w-[40%] bg-gradient-to-br from-[#003e5c] to-[#002f45] p-8 md:p-10 text-white flex flex-col justify-between relative overflow-hidden shrink-0">
           {/* Subtle Glow Art */}
           <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-amber-500/10 rounded-full blur-3xl" />
           
@@ -134,7 +134,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         </div>
 
         {/* Right Side: Message Form */}
-        <div className="w-full md:w-[60%] p-8 md:p-10 flex flex-col justify-center">
+        <div className="w-full md:w-[60%] p-8 md:p-10 flex flex-col justify-start md:max-h-[90vh] md:overflow-y-auto">
           {status === "success" ? (
             <div className="text-center py-10">
               <div className="w-16 h-16 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-500/20 animate-bounce">
