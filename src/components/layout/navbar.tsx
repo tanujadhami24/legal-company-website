@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Scale, ShieldAlert, Award, FileText, LayoutDashboard, ShoppingBag } from "lucide-react";
+import { Scale, ShieldAlert, Award, FileText, LayoutDashboard, ShoppingBag, Phone } from "lucide-react";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -25,7 +25,7 @@ export default function Navbar() {
     }
 
     const handleScrollSpy = () => {
-      const sections = ["home", "marketplace", "notary", "academy", "odr"];
+      const sections = ["home", "marketplace", "notary", "academy", "odr", "contact"];
       const triggerY = 200; // Trigger line 200px from the top (just below navbar)
 
       let found = false;
@@ -74,6 +74,7 @@ export default function Navbar() {
     { href: "/#notary", label: "Notary & Stamp", id: "notary", icon: FileText },
     { href: "/#academy", label: "Academy", id: "academy", icon: Award },
     { href: "/#odr", label: "ODR & Dispute", id: "odr", icon: ShieldAlert },
+    { href: "/#contact", label: "Contact Us", id: "contact", icon: Phone },
   ];
 
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, id: string) => {
