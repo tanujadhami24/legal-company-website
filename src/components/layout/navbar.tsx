@@ -4,11 +4,13 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Scale, ShieldAlert, Award, FileText, LayoutDashboard, ShoppingBag, Phone } from "lucide-react";
+import ContactModal from "./contact-modal";
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const [isContactOpen, setIsContactOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -78,6 +80,11 @@ export default function Navbar() {
   ];
 
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, id: string) => {
+    if (id === "contact") {
+      e.preventDefault();
+      setIsContactOpen(true);
+      return;
+    }
     if (pathname === "/" && href.startsWith("/#")) {
       e.preventDefault();
       const targetEl = document.getElementById(id);
@@ -147,6 +154,7 @@ export default function Navbar() {
           </Link>
         </div>
       </div>
+      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
     </header>
   );
 }
