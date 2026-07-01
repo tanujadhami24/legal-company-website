@@ -61,11 +61,11 @@ export default function Footer() {
             </h3>
 
             <div className="flex flex-col gap-4 text-gray-400">
-              <a href="mailto:livinglaw@gmail.com" className="hover:text-amber-400 transition-colors">
-                livinglaw@gmail.com
+              <a href="mailto:livinglaw01@gmail.com" className="hover:text-amber-400 transition-colors">
+                livinglaw01@gmail.com
               </a>
-              <a href="tel:+919876543210" className="hover:text-amber-400 transition-colors">
-                +91 9876543210
+              <a href="tel:+917505375151" className="hover:text-amber-400 transition-colors">
+                +91 7505375151
               </a>
               <p>Delhi, India</p>
             </div>

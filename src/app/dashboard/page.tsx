@@ -85,7 +85,7 @@ export default function DashboardPage() {
   const [currentUser, setCurrentUser] = useState<any>(null);
 
   useEffect(() => {
-    const fetchUserAndData = async () => {
+    const initDataOnMount = async () => {
       let activeUserId = "";
 
       if (isSupabaseConfigured && supabase) {
@@ -125,6 +125,33 @@ export default function DashboardPage() {
 
       const storedProfSub = localStorage.getItem("livinglaw_prof_sub");
       if (storedProfSub) setProfSub(storedProfSub);
+
+      const allApplications = localStorage.getItem("livinglaw_admin_prof_applications");
+      if (allApplications) {
+        setAppliedLawyers(JSON.parse(allApplications));
+      } else {
+        const defaultApplications = [
+          { name: "Adv. Karan Malhotra", type: "Lawyer", barId: "D/1092/2018", exp: "8 Years", status: "pending" }
+        ];
+        setAppliedLawyers(defaultApplications);
+        localStorage.setItem("livinglaw_admin_prof_applications", JSON.stringify(defaultApplications));
+      }
+
+      // Default Agenda Schedulers
+      const defaultHearings = [
+        { id: "1", title: "Rahul Saxena Commercial Dispute Mediation", date: "2026-06-10", time: "11:00 AM", court: "Living Law ODR Room" },
+        { id: "2", title: "Writ Petition - Environment Protection", date: "2026-06-15", time: "10:30 AM", court: "Supreme Court (Court Room 3)" }
+      ];
+      setHearings(defaultHearings);
+    };
+
+    initDataOnMount();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!currentUser) return;
+      const activeUserId = currentUser.id;
 
       // Fetch dynamic cases from Supabase if connected
       if (isSupabaseConfigured && supabase && activeUserId && activeUserId !== "mock-user-123") {
@@ -166,27 +193,9 @@ export default function DashboardPage() {
         setProfType(data.type || "Lawyer");
         setProfExp(data.exp || "5 Years");
       }
-
-      const allApplications = localStorage.getItem("livinglaw_admin_prof_applications");
-      if (allApplications) {
-        setAppliedLawyers(JSON.parse(allApplications));
-      } else {
-        const defaultApplications = [
-          { name: "Adv. Karan Malhotra", type: "Lawyer", barId: "D/1092/2018", exp: "8 Years", status: "pending" }
-        ];
-        setAppliedLawyers(defaultApplications);
-        localStorage.setItem("livinglaw_admin_prof_applications", JSON.stringify(defaultApplications));
-      }
-
-      // Default Agenda Schedulers
-      const defaultHearings = [
-        { id: "1", title: "Rahul Saxena Commercial Dispute Mediation", date: "2026-06-10", time: "11:00 AM", court: "Living Law ODR Room" },
-        { id: "2", title: "Writ Petition - Environment Protection", date: "2026-06-15", time: "10:30 AM", court: "Supreme Court (Court Room 3)" }
-      ];
-      setHearings(defaultHearings);
     };
 
-    fetchUserAndData();
+    fetchUserData();
   }, [currentUser]);
 
   // Professional profile verification form trigger

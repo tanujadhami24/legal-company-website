@@ -84,13 +84,20 @@ export default function Navbar() {
       setIsContactOpen(true);
       return;
     }
-    if (pathname === "/" && href.startsWith("/#")) {
-      e.preventDefault();
-      const targetEl = document.getElementById(id);
-      if (targetEl) {
-        targetEl.scrollIntoView({ behavior: "smooth" });
-        window.history.pushState(null, "", href);
-        setActiveSection(id);
+    if (pathname === "/") {
+      if (href.startsWith("/#")) {
+        e.preventDefault();
+        const targetEl = document.getElementById(id);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: "smooth" });
+          window.history.pushState(null, "", href);
+          setActiveSection(id);
+        }
+      }
+    } else {
+      if (href.startsWith("/#") || href === "/" || href === "/#home") {
+        e.preventDefault();
+        window.location.href = href;
       }
     }
   };
