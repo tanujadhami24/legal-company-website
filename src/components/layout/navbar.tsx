@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Scale, ShieldAlert, Award, FileText, LayoutDashboard, ShoppingBag, Phone } from "lucide-react";
-import ContactModal from "./contact-modal";
+import { Scale, ShieldAlert, Award, FileText, LayoutDashboard, ShoppingBag, PhoneCall, Mail, X, Phone } from "lucide-react";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -27,7 +26,7 @@ export default function Navbar() {
     }
 
     const handleScrollSpy = () => {
-      const sections = ["home", "marketplace", "notary", "academy", "odr", "contact"];
+      const sections = ["home", "marketplace", "notary", "academy", "odr"];
       const triggerY = 200; // Trigger line 200px from the top (just below navbar)
 
       let found = false;
@@ -76,7 +75,7 @@ export default function Navbar() {
     { href: "/#notary", label: "Notary & Stamp", id: "notary", icon: FileText },
     { href: "/#academy", label: "Academy", id: "academy", icon: Award },
     { href: "/#odr", label: "ODR & Dispute", id: "odr", icon: ShieldAlert },
-    { href: "/#contact", label: "Contact Us", id: "contact", icon: Phone },
+    { href: "#contact", label: "Contact Us", id: "contact", icon: PhoneCall },
   ];
 
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, id: string) => {
@@ -154,7 +153,64 @@ export default function Navbar() {
           </Link>
         </div>
       </div>
-      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
+
+      {/* Contact Us Modal */}
+      {isContactOpen && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl p-8 max-w-sm w-full relative shadow-2xl border border-slate-100 flex flex-col items-center text-center animate-in scale-in duration-200">
+            {/* Close Button */}
+            <button 
+              onClick={() => setIsContactOpen(false)}
+              className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
+              aria-label="Close contact modal"
+            >
+              <X size={18} />
+            </button>
+
+            {/* Icon */}
+            <div className="p-4 bg-amber-500/10 rounded-full text-amber-600 mb-4">
+              <PhoneCall size={28} className="animate-pulse" />
+            </div>
+
+            {/* Headings */}
+            <h3 className="font-serif-legal font-bold text-xl text-slate-900">Contact Living Law</h3>
+            <p className="text-xs text-slate-400 mt-1 mb-6">Chambers & LegalTech Support Hotline</p>
+
+            {/* Info details */}
+            <div className="w-full space-y-4">
+              <a 
+                href="tel:+917505375151" 
+                className="w-full flex items-center gap-3.5 p-3.5 bg-slate-50 hover:bg-amber-50/40 border border-slate-100 hover:border-amber-500/20 rounded-2xl transition duration-200 group text-slate-800 text-sm font-semibold"
+              >
+                <div className="p-2 bg-amber-500/10 rounded-xl text-amber-600 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                  <Phone size={16} />
+                </div>
+                <div className="text-left">
+                  <span className="text-[10px] text-slate-400 font-mono block font-bold leading-none mb-1">CALL US</span>
+                  <span>+91 7505375151</span>
+                </div>
+              </a>
+
+              <a 
+                href="mailto:livinglaw01@gmail.com" 
+                className="w-full flex items-center gap-3.5 p-3.5 bg-slate-50 hover:bg-amber-50/40 border border-slate-100 hover:border-amber-500/20 rounded-2xl transition duration-200 group text-slate-800 text-sm font-semibold"
+              >
+                <div className="p-2 bg-amber-500/10 rounded-xl text-amber-600 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                  <Mail size={16} />
+                </div>
+                <div className="text-left">
+                  <span className="text-[10px] text-slate-400 font-mono block font-bold leading-none mb-1">EMAIL US</span>
+                  <span>livinglaw01@gmail.com</span>
+                </div>
+              </a>
+            </div>
+
+            <p className="text-[10px] text-slate-400 leading-relaxed mt-6">
+              Our legal advisors are available Mon-Sat, 9:00 AM - 7:00 PM IST.
+            </p>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
