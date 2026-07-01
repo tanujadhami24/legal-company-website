@@ -26,21 +26,18 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     setStatus("submitting");
 
     try {
-      // Simulate API submit delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-      // Construct mailto link as a robust client-side fallback
-      const mailtoSubject = encodeURIComponent(`[Living Law Inquiry] ${formData.subject}`);
-      const mailtoBody = encodeURIComponent(
-        `Name: ${formData.name}\n` +
-        `Email: ${formData.email}\n` +
-        `Phone: ${formData.phone}\n\n` +
-        `Message:\n${formData.message}`
-      );
-      
-      // Open mailto link so it directly pre-fills user's email client
-      window.location.href = `mailto:livinglaw01@gmail.com?subject=${mailtoSubject}&body=${mailtoBody}`;
-      
+      if (!response.ok) {
+        throw new Error("Failed to send message.");
+      }
+
       setStatus("success");
       setFormData({ name: "", email: "", phone: "", subject: "Legal Consultation Inquiry", message: "" });
     } catch (err) {
@@ -144,10 +141,10 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 <CheckCircle2 size={36} />
               </div>
               <h4 className="text-2xl font-bold text-slate-800 dark:text-white">
-                Message Compiled!
+                Message Sent!
               </h4>
               <p className="mt-4 text-slate-600 dark:text-slate-300 text-sm leading-relaxed max-w-sm mx-auto">
-                Opening your email client to send your message directly to <strong>livinglaw01@gmail.com</strong>. Please hit send in your email client to complete transmission!
+                Thank you! Your message has been sent successfully to <strong>livinglaw01@gmail.com</strong>. Our chambers will get back to you shortly.
               </p>
               <button 
                 onClick={() => setStatus("idle")}
@@ -259,7 +256,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    <span>Preparing Mail client...</span>
+                    <span>Sending message...</span>
                   </>
                 ) : (
                   <>
