@@ -96,121 +96,129 @@ export default function Navbar() {
   };
 
   return (
-    <header className={`w-full sticky top-0 z-50 transition-all duration-300 ${
-      isScrolled 
-        ? "bg-white/60 dark:bg-[#030712]/60 backdrop-blur-md shadow-xs border-b border-gray-200/50 dark:border-gray-800/50" 
-        : "bg-white/90 dark:bg-[#030712]/90 backdrop-blur-xs border-b border-gray-200/80 dark:border-gray-800/80"
-    }`}>
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <>
+      <header className={`w-full sticky top-0 z-50 transition-all duration-300 ${
+        isScrolled 
+          ? "bg-white/60 dark:bg-[#030712]/60 backdrop-blur-md shadow-xs border-b border-gray-200/50 dark:border-gray-800/50" 
+          : "bg-white/90 dark:bg-[#030712]/90 backdrop-blur-xs border-b border-gray-200/80 dark:border-gray-800/80"
+      }`}>
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
 
-        <Link href="/#home" onClick={(e) => handleNavLinkClick(e, "/#home", "home")} className="flex items-center gap-2.5 group">
-          <div className="p-2 bg-gradient-to-br from-amber-500 to-amber-700 rounded-full border border-amber-400/30 text-white shadow-md shadow-amber-500/5">
-            <Scale size={20} className="group-hover:rotate-12 transition-transform duration-300" />
-          </div>
-          <div>
-            <h1 className="text-lg font-bold text-black dark:text-white font-serif-legal tracking-wide leading-none">
-              LIVING <span className="text-amber-500 dark:text-amber-400 font-sans">LAW</span>
-            </h1>
-            <span className="text-[9px] font-mono tracking-widest text-slate-400 uppercase block mt-1 font-bold">
-              Chambers & LegalTech
-            </span>
-          </div>
-        </Link>
-
-        {/* Nav Links */}
-        <nav className="hidden lg:flex items-center gap-6 text-sm font-medium">
-          {navLinks.map((link) => {
-            const Icon = link.icon;
-            const isActive = pathname === "/" 
-              ? activeSection === link.id
-              : pathname.startsWith(link.href.split("#")[0]);
-
-            return (
-              <Link
-                key={link.id}
-                href={link.href}
-                onClick={(e) => handleNavLinkClick(e, link.href, link.id)}
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg transition-all duration-200 hover:text-amber-500 dark:hover:text-amber-400 ${
-                  isActive 
-                    ? "text-amber-600 dark:text-amber-400 bg-amber-50/50 dark:bg-amber-950/20 border-b border-amber-500" 
-                    : "text-gray-600 dark:text-gray-300"
-                }`}
-              >
-                <Icon size={16} />
-                <span>{link.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* Right Side */}
-        <div className="flex items-center gap-4">
-          <Link href="/dashboard">
-            <button className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 dark:from-amber-600 dark:to-amber-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition hover:opacity-90 shadow-md hover:shadow-amber-500/10">
-              <LayoutDashboard size={16} />
-              <span>Workspace Login</span>
-            </button>
+          <Link href="/#home" onClick={(e) => handleNavLinkClick(e, "/#home", "home")} className="flex items-center gap-2.5 group">
+            <div className="p-2 bg-gradient-to-br from-amber-500 to-amber-700 rounded-full border border-amber-400/30 text-white shadow-md shadow-amber-500/5">
+              <Scale size={20} className="group-hover:rotate-12 transition-transform duration-300" />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold text-black dark:text-white font-serif-legal tracking-wide leading-none">
+                LIVING <span className="text-amber-500 dark:text-amber-400 font-sans">LAW</span>
+              </h1>
+              <span className="text-[9px] font-mono tracking-widest text-slate-400 uppercase block mt-1 font-bold">
+                Chambers & LegalTech
+              </span>
+            </div>
           </Link>
+
+          {/* Nav Links */}
+          <nav className="hidden lg:flex items-center gap-6 text-sm font-medium">
+            {navLinks.map((link) => {
+              const Icon = link.icon;
+              const isActive = pathname === "/" 
+                ? activeSection === link.id
+                : pathname.startsWith(link.href.split("#")[0]);
+
+              return (
+                <Link
+                  key={link.id}
+                  href={link.href}
+                  onClick={(e) => handleNavLinkClick(e, link.href, link.id)}
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg transition-all duration-200 hover:text-amber-500 dark:hover:text-amber-400 ${
+                    isActive 
+                      ? "text-amber-600 dark:text-amber-400 bg-amber-50/50 dark:bg-amber-950/20 border-b border-amber-500" 
+                      : "text-gray-600 dark:text-gray-300"
+                  }`}
+                >
+                  <Icon size={16} />
+                  <span>{link.label}</span>
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Right Side */}
+          <div className="flex items-center gap-4">
+            <Link href="/dashboard">
+              <button className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 dark:from-amber-600 dark:to-amber-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition hover:opacity-90 shadow-md hover:shadow-amber-500/10">
+                <LayoutDashboard size={16} />
+                <span>Workspace Login</span>
+              </button>
+            </Link>
+          </div>
         </div>
-      </div>
+      </header>
 
       {/* Contact Us Modal */}
       {isContactOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl p-8 max-w-sm w-full relative shadow-2xl border border-slate-100 flex flex-col items-center text-center animate-in scale-in duration-200">
+        <div 
+          className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={() => setIsContactOpen(false)}
+        >
+          <div 
+            className="bg-white dark:bg-slate-900 rounded-3xl p-8 max-w-sm w-full relative shadow-2xl border border-slate-100 dark:border-slate-800 flex flex-col items-center text-center animate-in scale-in duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Close Button */}
             <button 
               onClick={() => setIsContactOpen(false)}
-              className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
+              className="absolute top-4 right-4 p-2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"
               aria-label="Close contact modal"
             >
               <X size={18} />
             </button>
 
             {/* Icon */}
-            <div className="p-4 bg-amber-500/10 rounded-full text-amber-600 mb-4">
+            <div className="p-4 bg-amber-500/10 rounded-full text-amber-600 dark:text-amber-400 mb-4">
               <PhoneCall size={28} className="animate-pulse" />
             </div>
 
             {/* Headings */}
-            <h3 className="font-serif-legal font-bold text-xl text-slate-900">Contact Living Law</h3>
-            <p className="text-xs text-slate-400 mt-1 mb-6">Chambers & LegalTech Support Hotline</p>
+            <h3 className="font-serif-legal font-bold text-xl text-slate-900 dark:text-white">Contact Living Law</h3>
+            <p className="text-xs text-slate-400 dark:text-slate-500 mt-1 mb-6">Chambers & LegalTech Support Hotline</p>
 
             {/* Info details */}
             <div className="w-full space-y-4">
               <a 
                 href="tel:+917505375151" 
-                className="w-full flex items-center gap-3.5 p-3.5 bg-slate-50 hover:bg-amber-50/40 border border-slate-100 hover:border-amber-500/20 rounded-2xl transition duration-200 group text-slate-800 text-sm font-semibold"
+                className="w-full flex items-center gap-3.5 p-3.5 bg-slate-50 dark:bg-slate-800/40 hover:bg-amber-50/40 dark:hover:bg-amber-950/20 border border-slate-100 dark:border-slate-800 hover:border-amber-500/20 rounded-2xl transition duration-200 group text-slate-800 dark:text-slate-200 text-sm font-semibold"
               >
-                <div className="p-2 bg-amber-500/10 rounded-xl text-amber-600 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                <div className="p-2 bg-amber-500/10 rounded-xl text-amber-600 dark:text-amber-400 group-hover:bg-amber-500 group-hover:text-white transition-colors">
                   <Phone size={16} />
                 </div>
                 <div className="text-left">
-                  <span className="text-[10px] text-slate-400 font-mono block font-bold leading-none mb-1">CALL US</span>
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500 font-mono block font-bold leading-none mb-1">CALL US</span>
                   <span>+91 7505375151</span>
                 </div>
               </a>
 
               <a 
                 href="mailto:livinglaw01@gmail.com" 
-                className="w-full flex items-center gap-3.5 p-3.5 bg-slate-50 hover:bg-amber-50/40 border border-slate-100 hover:border-amber-500/20 rounded-2xl transition duration-200 group text-slate-800 text-sm font-semibold"
+                className="w-full flex items-center gap-3.5 p-3.5 bg-slate-50 dark:bg-slate-800/40 hover:bg-amber-50/40 dark:hover:bg-amber-950/20 border border-slate-100 dark:border-slate-800 hover:border-amber-500/20 rounded-2xl transition duration-200 group text-slate-800 dark:text-slate-200 text-sm font-semibold"
               >
-                <div className="p-2 bg-amber-500/10 rounded-xl text-amber-600 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                <div className="p-2 bg-amber-500/10 rounded-xl text-amber-600 dark:text-amber-400 group-hover:bg-amber-500 group-hover:text-white transition-colors">
                   <Mail size={16} />
                 </div>
                 <div className="text-left">
-                  <span className="text-[10px] text-slate-400 font-mono block font-bold leading-none mb-1">EMAIL US</span>
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500 font-mono block font-bold leading-none mb-1">EMAIL US</span>
                   <span>livinglaw01@gmail.com</span>
                 </div>
               </a>
             </div>
 
-            <p className="text-[10px] text-slate-400 leading-relaxed mt-6">
+            <p className="text-[10px] text-slate-400 dark:text-slate-500 leading-relaxed mt-6">
               Our legal advisors are available Mon-Sat, 9:00 AM - 7:00 PM IST.
             </p>
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 }
