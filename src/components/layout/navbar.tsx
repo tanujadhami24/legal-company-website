@@ -71,7 +71,7 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/#home", label: "Home", id: "home", icon: Scale },
-    { href: "/#marketplace", label: "Marketplace", id: "marketplace", icon: ShoppingBag },
+    { href: "/marketplace", label: "Marketplace", id: "marketplace", icon: ShoppingBag },
     { href: "/#notary", label: "Notary & Stamp", id: "notary", icon: FileText },
     { href: "/#academy", label: "Academy", id: "academy", icon: Award },
     { href: "/#odr", label: "ODR & Dispute", id: "odr", icon: ShieldAlert },

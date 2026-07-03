@@ -1,7 +1,7 @@
 import Navbar from "@/components/layout/navbar";
 import CourtBanner from "@/components/home/court-banner";
+import Introduction from "@/components/home/introduction";
 import Hero from "@/components/home/hero";
-import MarketplaceSection from "@/components/home/marketplace-section";
 import NotarySection from "@/components/home/notary-section";
 import AcademySection from "@/components/home/academy-section";
 import OdrSection from "@/components/home/odr-section";
@@ -14,11 +14,8 @@ export default function Home() {
 
       <div id="home">
         <CourtBanner />
+        <Introduction />
         <Hero />
-      </div>
-
-      <div id="marketplace" className="border-t border-amber-500/10">
-        <MarketplaceSection />
       </div>
 
       <div id="notary" className="border-t border-amber-500/10">
