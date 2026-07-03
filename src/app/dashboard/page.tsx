@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import AuthModal from "@/components/common/auth-modal";
@@ -21,6 +22,8 @@ interface CourtHearing {
 }
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [activeRole, setActiveRole] = useState<"client" | "professional" | "neutral" | "admin">("client");
 
   // Global Persistence states
@@ -111,6 +114,12 @@ export default function DashboardPage() {
           setCurrentUser(parsed);
           activeUserId = parsed.id;
         }
+      }
+
+      if (!activeUserId) {
+        router.push("/login");
+      } else {
+        setIsCheckingAuth(false);
       }
 
       // Load local storage items as fallback/base
@@ -412,6 +421,19 @@ export default function DashboardPage() {
     }, 1500);
   };
 
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen bg-[#030712] text-slate-100 flex flex-col justify-between">
+        <Navbar />
+        <div className="flex-1 flex flex-col items-center justify-center space-y-4">
+          <div className="w-10 h-10 border-4 border-slate-800 border-t-amber-500 rounded-full animate-spin"></div>
+          <span className="text-xs text-slate-500 font-mono tracking-widest uppercase">Securing litigation session...</span>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white dark:bg-[#030712] min-h-screen text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <Navbar />
@@ -435,7 +457,7 @@ export default function DashboardPage() {
                     if (supabase) await supabase.auth.signOut();
                     localStorage.removeItem("living_law_mock_user");
                     setCurrentUser(null);
-                    window.location.reload();
+                    window.location.href = "/login";
                   }}
                   className="text-amber-500 hover:text-amber-400 underline font-semibold transition"
                 >
@@ -451,21 +473,6 @@ export default function DashboardPage() {
               </button>
             )}
 
-            <div className="flex bg-slate-900 border border-slate-800 p-1.5 rounded-xl text-xs gap-1.5 self-start md:self-auto shrink-0 mt-1">
-              {(["client", "professional", "neutral", "admin"] as const).map((role) => (
-                <button
-                  key={role}
-                  onClick={() => setActiveRole(role)}
-                  className={`px-3 py-2 rounded-lg font-bold capitalize transition ${
-                    activeRole === role
-                      ? "bg-amber-500 text-white shadow"
-                      : "text-slate-400 hover:text-slate-200"
-                  }`}
-                >
-                  {role}
-                </button>
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -473,10 +480,7 @@ export default function DashboardPage() {
       {/* Main Workspace Dashboard Content */}
       <main className="max-w-7xl mx-auto px-6 py-12">
         <div className="max-w-4xl mx-auto space-y-6">
-            
-            {/* CLIENT WORKSPACE */}
-            {activeRole === "client" && (
-              <div className="space-y-6 animate-in fade-in duration-300">
+            <div className="space-y-6 animate-in fade-in duration-300">
                 <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
                   <div className="flex justify-between items-center border-b border-slate-100 dark:border-slate-800/80 pb-4">
                     <h3 className="font-serif-legal font-bold text-xl flex items-center gap-2">
@@ -588,414 +592,6 @@ export default function DashboardPage() {
                   </div>
                 </div>
               </div>
-            )}
-
-            {/* PROFESSIONAL WORKSPACE */}
-            {activeRole === "professional" && (
-              <div className="space-y-6 animate-in fade-in duration-300">
-                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
-                  
-                  {/* Verification Banner */}
-                  {verifyStatus === "not_applied" && (
-                    <div className="bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 p-4 rounded-xl text-xs flex gap-3 items-center">
-                      <AlertTriangle size={20} className="shrink-0 animate-bounce" />
-                      <div className="flex-1">
-                        <p className="font-bold">Bar Association ID Not Verified</p>
-                        <p className="mt-0.5">Please submit your Bar Council registration ID to unlock full professional listings.</p>
-                      </div>
-                    </div>
-                  )}
-
-                  {verifyStatus === "pending" && (
-                    <div className="bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 p-4 rounded-xl text-xs flex gap-3 items-center">
-                      <Clock size={20} className="shrink-0 animate-pulse" />
-                      <div className="flex-1">
-                        <p className="font-bold">Credential Verification Pending Admin Approval</p>
-                        <p className="mt-0.5">Our compliance admins are verifying your uploaded credentials. Check back soon.</p>
-                      </div>
-                    </div>
-                  )}
-
-                  {verifyStatus === "verified" && (
-                    <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 p-4 rounded-xl text-xs flex gap-3 items-center">
-                      <CheckCircle2 size={20} className="shrink-0" />
-                      <div className="flex-1">
-                        <p className="font-bold">Bar credentials Verified & Listing is Active</p>
-                        <p className="mt-0.5">You appear in client search results as a verified professional. You can manage ODR invites.</p>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Profile setup form */}
-                  {verifyStatus === "not_applied" && (
-                    <form onSubmit={handleApplyVerification} className="space-y-4">
-                      <h4 className="font-serif-legal font-bold text-lg border-b border-slate-100 dark:border-slate-800 pb-2">Apply for Professional Listing</h4>
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-[10px] font-semibold text-slate-500 uppercase mb-2">Professional Name</label>
-                          <input 
-                            type="text" 
-                            required
-                            value={profName}
-                            onChange={(e) => setProfName(e.target.value)}
-                            placeholder="e.g. Adv. Karan Malhotra" 
-                            className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-amber-500"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="block text-[10px] font-semibold text-slate-500 uppercase mb-2">Bar Association Registration ID</label>
-                          <input 
-                            type="text" 
-                            required
-                            value={barId}
-                            onChange={(e) => setBarId(e.target.value)}
-                            placeholder="e.g. D/1092/2018" 
-                            className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-amber-500"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="block text-[10px] font-semibold text-slate-500 uppercase mb-2">Profession Type</label>
-                          <select 
-                            value={profType}
-                            onChange={(e) => setProfType(e.target.value)}
-                            className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-amber-500"
-                          >
-                            <option>Lawyer</option>
-                            <option>Chartered Accountant (CA)</option>
-                            <option>Company Secretary (CS)</option>
-                            <option>Arbitrator / Mediator</option>
-                          </select>
-                        </div>
-
-                        <div>
-                          <label className="block text-[10px] font-semibold text-slate-500 uppercase mb-2">Years of Experience</label>
-                          <select 
-                            value={profExp}
-                            onChange={(e) => setProfExp(e.target.value)}
-                            className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-amber-500"
-                          >
-                            <option>1-3 Years</option>
-                            <option>4-7 Years</option>
-                            <option>8-15 Years</option>
-                            <option>15+ Years</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <button 
-                        type="submit" 
-                        className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-6 rounded-xl text-xs transition"
-                      >
-                        Submit Profile for Verification
-                      </button>
-                    </form>
-                  )}
-                </div>
-
-                {/* Professional Schedulers Diary & CRM */}
-                {verifyStatus === "verified" && (
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {/* Court Agenda Schedulers */}
-                    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm space-y-4">
-                      <h4 className="font-serif-legal font-bold text-base border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-1.5">
-                        <Calendar size={18} className="text-amber-500" />
-                        <span>Diary & Hearing Agenda</span>
-                      </h4>
-
-                      <form onSubmit={handleAddHearing} className="space-y-2 text-[10px] text-slate-500 uppercase tracking-wider font-semibold">
-                        <input 
-                          type="text" 
-                          required
-                          value={newHearingTitle}
-                          onChange={(e) => setNewHearingTitle(e.target.value)}
-                          placeholder="Hearing or consultation title"
-                          className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs normal-case text-slate-900 dark:text-slate-100 focus:outline-none"
-                        />
-                        <div className="grid grid-cols-2 gap-2">
-                          <input 
-                            type="date" 
-                            required
-                            value={newHearingDate}
-                            onChange={(e) => setNewHearingDate(e.target.value)}
-                            className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-slate-100 focus:outline-none"
-                          />
-                          <input 
-                            type="text" 
-                            required
-                            value={newHearingTime}
-                            onChange={(e) => setNewHearingTime(e.target.value)}
-                            placeholder="11:30 AM"
-                            className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs normal-case text-slate-900 dark:text-slate-100 focus:outline-none"
-                          />
-                        </div>
-                        <button 
-                          type="submit" 
-                          className="bg-slate-950 text-white dark:bg-white dark:text-black py-1.5 rounded-lg w-full text-[10px] font-bold"
-                        >
-                          Schedule Event
-                        </button>
-                      </form>
-
-                      <div className="space-y-2 max-h-40 overflow-y-auto pt-2">
-                        {hearings.map((h) => (
-                          <div key={h.id} className="p-2.5 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-100 dark:border-slate-800 text-[11px] flex justify-between items-start gap-2">
-                            <div>
-                              <p className="font-semibold text-slate-800 dark:text-slate-200 leading-tight">{h.title}</p>
-                              <p className="text-[9px] text-slate-400 mt-1">{h.date} at {h.time} • {h.court}</p>
-                            </div>
-                            <button onClick={() => handleRemoveHearing(h.id)} className="text-red-500 hover:text-red-600">
-                              <Trash2 size={12} />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* CRM Client Enquiry Leads */}
-                    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm space-y-4">
-                      <h4 className="font-serif-legal font-bold text-base border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-1.5">
-                        <Briefcase size={18} className="text-amber-500" />
-                        <span>CRM Portal Client Leads</span>
-                      </h4>
-
-                      <div className="space-y-2">
-                        {crmLeads.map((lead, idx) => (
-                          <div key={idx} className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-xl space-y-2">
-                            <div className="flex justify-between text-[11px]">
-                              <span className="font-semibold text-slate-800 dark:text-slate-200">{lead.name}</span>
-                              <span className="text-[9px] text-slate-400">{lead.date}</span>
-                            </div>
-                            <p className="text-[10px] text-amber-500/90 leading-tight font-medium">{lead.type}</p>
-                            <div className="flex justify-between items-center pt-1">
-                              <span className="text-[9px] text-slate-400">{lead.email}</span>
-                              <button 
-                                onClick={() => alert(`Opening email drafter to respond to ${lead.email}...`)}
-                                className="bg-slate-950 text-white dark:bg-white dark:text-black hover:bg-amber-500 text-[8px] font-bold px-2 py-1 rounded"
-                              >
-                                Reach Out
-                              </button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Social post drafting helper */}
-                      <div className="border-t border-slate-100 dark:border-slate-800/80 pt-4 space-y-2">
-                        <h5 className="text-[11px] font-bold text-slate-500">Legal awareness post drafts:</h5>
-                        <div className="flex gap-1.5">
-                          <input 
-                            type="text" 
-                            value={socialPrompt}
-                            onChange={(e) => setSocialPrompt(e.target.value)}
-                            placeholder="Enter awareness topic..." 
-                            className="flex-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-xs focus:outline-none"
-                          />
-                          <button 
-                            onClick={handleSocialDraft}
-                            disabled={isSocialDrafting}
-                            className="bg-amber-500 text-white text-[10px] font-bold px-3 rounded-xl shrink-0"
-                          >
-                            Draft
-                          </button>
-                        </div>
-
-                        {socialResult && (
-                          <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-3 rounded-xl text-[10px] leading-relaxed whitespace-pre-line text-slate-400 relative">
-                            <button 
-                              onClick={() => {
-                                navigator.clipboard.writeText(socialResult);
-                                alert("Social post copied to clipboard!");
-                              }}
-                              className="absolute top-2 right-2 text-slate-500 hover:text-amber-500"
-                            >
-                              <Copy size={10} />
-                            </button>
-                            {socialResult}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Professional Subscription Plans */}
-                    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-6 mt-6">
-                      <div className="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3 flex-wrap gap-2">
-                        <h4 className="font-serif-legal font-bold text-lg">
-                          Professional Subscription Tiers
-                        </h4>
-                        <span className="text-xs bg-amber-500/10 text-amber-600 dark:text-amber-400 px-3 py-1 rounded-full font-bold">
-                          Active Plan: {profSub}
-                        </span>
-                      </div>
-
-                      <div className="grid md:grid-cols-4 gap-6">
-                        {/* Tier 1 */}
-                        <div className="border border-slate-200 dark:border-slate-800 p-5 rounded-2xl space-y-4 hover:border-amber-500/30 transition flex flex-col justify-between">
-                          <div className="space-y-3">
-                            <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold block">1 Month Tier</span>
-                            <h5 className="font-bold text-base">ODR Access Only</h5>
-                            <span className="text-sm font-bold text-emerald-500 block">Complimentary</span>
-                            <p className="text-[10px] text-slate-500 dark:text-slate-400">Basic single-month ODR dispute resolution platform usage.</p>
-                          </div>
-                          <button 
-                            onClick={() => handleBuyProfSubscription("1-Month ODR", "Complimentary")}
-                            className="w-full bg-slate-950 dark:bg-white text-white dark:text-black font-semibold py-2.5 rounded-xl text-xs mt-4"
-                          >
-                            Activate Plan
-                          </button>
-                        </div>
-
-                        {/* Tier 2 */}
-                        <div className="border border-slate-200 dark:border-slate-800 p-5 rounded-2xl space-y-4 hover:border-amber-500/30 transition flex flex-col justify-between">
-                          <div className="space-y-3">
-                            <span className="text-[10px] text-amber-500 uppercase tracking-widest font-bold block">Basic Plan</span>
-                            <h5 className="font-bold text-base">3 Months Access</h5>
-                            <span className="text-sm font-bold text-emerald-500 block">Complimentary</span>
-                            <p className="text-[10px] text-slate-500 dark:text-slate-400">Basic website built (at least 5 pages) + AI premium subscription for LL tools + full listing & ODR access.</p>
-                          </div>
-                          <button 
-                            onClick={() => handleBuyProfSubscription("Basic 3-Month", "Complimentary")}
-                            className="w-full bg-slate-950 dark:bg-white text-white dark:text-black font-semibold py-2.5 rounded-xl text-xs mt-4"
-                          >
-                            Activate Plan
-                          </button>
-                        </div>
-
-                        {/* Tier 3 */}
-                        <div className="border-2 border-amber-500 p-5 rounded-2xl space-y-4 relative overflow-hidden bg-amber-500/5 flex flex-col justify-between">
-                          <div className="absolute top-2 right-2 bg-amber-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-md">POPULAR</div>
-                          <div className="space-y-3">
-                            <span className="text-[10px] text-amber-500 uppercase tracking-widest font-bold block">Standard Plan</span>
-                            <h5 className="font-bold text-base">6 Months Access</h5>
-                            <span className="text-sm font-bold text-emerald-500 block">Complimentary</span>
-                            <p className="text-[10px] text-slate-500 dark:text-slate-400">10-page firm/lawyer website + all AI tools + full listing & ODR platform access.</p>
-                          </div>
-                          <button 
-                            onClick={() => handleBuyProfSubscription("Standard 6-Month", "Complimentary")}
-                            className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 rounded-xl text-xs mt-4 shadow-md shadow-amber-500/10"
-                          >
-                            Activate Plan
-                          </button>
-                        </div>
-
-                        {/* Tier 4 */}
-                        <div className="border border-slate-200 dark:border-slate-800 p-5 rounded-2xl space-y-4 hover:border-amber-500/30 transition flex flex-col justify-between">
-                          <div className="space-y-3">
-                            <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold block">Yearly Plan</span>
-                            <h5 className="font-bold text-base">12 Months Access</h5>
-                            <span className="text-sm font-bold text-emerald-500 block">Complimentary</span>
-                            <p className="text-[10px] text-slate-500 dark:text-slate-400">15-page customized website + all AI tools + full listing & ODR access + 6 months extra subscription.</p>
-                          </div>
-                          <button 
-                            onClick={() => handleBuyProfSubscription("Yearly 12-Month", "Complimentary")}
-                            className="w-full bg-slate-950 dark:bg-white text-white dark:text-black font-semibold py-2.5 rounded-xl text-xs mt-4"
-                          >
-                            Activate Plan
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* NEUTRAL WORKSPACE */}
-            {activeRole === "neutral" && (
-              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-6 animate-in fade-in duration-300">
-                <h3 className="font-serif-legal font-bold text-xl border-b border-slate-100 dark:border-slate-800 pb-4 flex items-center gap-2">
-                  <ShieldAlert className="text-amber-500" size={20} />
-                  <span>Neutral Resolution Workspace</span>
-                </h3>
-
-                <p className="text-xs text-slate-400">Manage pending arbitration / mediation dispute invites filed by corporate parties.</p>
-
-                <div className="space-y-3">
-                  {odrCases.map((c) => (
-                    <div key={c.id} className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 flex justify-between items-center gap-4 text-xs">
-                      <div>
-                        <div className="flex gap-2 items-center mb-1">
-                          <span className="font-bold text-amber-500 font-mono">{c.id}</span>
-                          <span className="bg-slate-200 dark:bg-slate-800 px-2 py-0.5 rounded text-[10px] font-semibold">{c.type}</span>
-                        </div>
-                        <h4 className="font-bold text-slate-800 dark:text-slate-200">{c.claimant} vs. {c.respondent}</h4>
-                        <p className="text-[10px] text-slate-400 mt-1">Dispute Amount: ₹{c.claimAmount.toLocaleString("en-IN")}</p>
-                      </div>
-
-                      <div className="flex gap-2">
-                        <button 
-                          onClick={() => alert("Mediator invite accepted. Entering ODR Case hearing chamber.")}
-                          className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-3 rounded-lg text-[10px]"
-                        >
-                          Accept Case
-                        </button>
-                        <button 
-                          onClick={() => alert("Mediator invite declined.")}
-                          className="bg-slate-200 dark:bg-slate-800 text-slate-400 hover:text-slate-200 py-2 px-3 rounded-lg text-[10px]"
-                        >
-                          Decline
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* ADMIN WORKSPACE */}
-            {activeRole === "admin" && (
-              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-6 animate-in fade-in duration-300">
-                <h3 className="font-serif-legal font-bold text-xl border-b border-slate-100 dark:border-slate-800 pb-4 flex items-center gap-2">
-                  <Award className="text-amber-500" size={20} />
-                  <span>Living Law Compliance Control Admin</span>
-                </h3>
-
-                <div className="grid grid-cols-3 gap-4 text-center">
-                  <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl">
-                    <span className="text-[9px] uppercase tracking-wider text-slate-400 block font-semibold">Active ODR cases</span>
-                    <span className="text-xl font-bold">{odrCases.length}</span>
-                  </div>
-                  <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl">
-                    <span className="text-[9px] uppercase tracking-wider text-slate-400 block font-semibold">Active Applications</span>
-                    <span className="text-xl font-bold text-emerald-500">{clientRegs.length}</span>
-                  </div>
-                  <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl">
-                    <span className="text-[9px] uppercase tracking-wider text-slate-400 block font-semibold">Stamp Duty Orders</span>
-                    <span className="text-xl font-bold">{clientNotaries.length}</span>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <h4 className="font-serif-legal font-bold text-base border-b border-slate-100 dark:border-slate-800 pb-2">Pending Professional Verification Queue</h4>
-                  
-                  <div className="space-y-3">
-                    {appliedLawyers.map((lawyer, idx) => (
-                      <div key={idx} className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 flex justify-between items-center gap-4 text-xs">
-                        <div>
-                          <h5 className="font-bold text-slate-800 dark:text-slate-200">{lawyer.name}</h5>
-                          <p className="text-[10px] text-slate-400 mt-0.5">{lawyer.type} • Exp: {lawyer.exp} • Bar ID: <strong className="font-mono">{lawyer.barId}</strong></p>
-                        </div>
-
-                        {lawyer.status === "pending" ? (
-                          <button 
-                            onClick={() => handleAdminVerifyLawyer(lawyer.barId)}
-                            className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-1.5 px-3 rounded-lg text-[10px] shadow"
-                          >
-                            Approve Listing
-                          </button>
-                        ) : (
-                          <span className="text-emerald-500 font-bold flex items-center gap-1 text-[10px]">
-                            <CheckCircle2 size={12} />
-                            <span>Verified</span>
-                          </span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
 
 
         </div>

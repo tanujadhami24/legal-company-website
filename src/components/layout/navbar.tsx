@@ -157,7 +157,7 @@ export default function Navbar() {
 
           {/* Right Side */}
           <div className="flex items-center gap-4">
-            <Link href="/dashboard">
+            <Link href="/login">
               <button className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 dark:from-amber-600 dark:to-amber-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition hover:opacity-90 shadow-md hover:shadow-amber-500/10">
                 <LayoutDashboard size={16} />
                 <span>Workspace Login</span>
