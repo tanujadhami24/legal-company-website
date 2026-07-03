@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
-import { Scale, Phone, ShieldCheck, Loader2, ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
+import { supabase, isSupabaseConfigured, syncUserProfile } from "@/lib/supabase";
+import { Scale, Phone, ShieldCheck, Loader2, ArrowLeft, ArrowRight, CheckCircle2, Info } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function LoginPage() {
     }
   }, [router]);
 
-  const handleSendOtp = (e: React.FormEvent) => {
+  const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setSuccessMessage(null);
@@ -39,53 +40,103 @@ export default function LoginPage() {
 
     setLoading(true);
 
-    setTimeout(() => {
-      // Generate a mock 6-digit OTP
-      const mockOtp = Math.floor(100000 + Math.random() * 900000).toString();
-      setGeneratedOtp(mockOtp);
+    if (!isSupabaseConfigured || !supabase) {
+      // Local Mock Mode fallback
+      setTimeout(() => {
+        const mockOtp = Math.floor(100000 + Math.random() * 900000).toString();
+        setGeneratedOtp(mockOtp);
+        setLoading(false);
+        setStep("otp");
+        setSuccessMessage(`Simulated OTP sent successfully to +91 ${rawNum.slice(-10)}`);
+        alert(`[Living Law Simulated OTP Code]: ${mockOtp}`);
+      }, 1200);
+      return;
+    }
+
+    try {
+      // Supabase Real SMS OTP send
+      const { error: otpError } = await supabase.auth.signInWithOtp({
+        phone: `+91${rawNum}`,
+      });
+
+      if (otpError) throw otpError;
+
       setLoading(false);
       setStep("otp");
-      
-      // Visual feedback showing simulated SMS delivery
       setSuccessMessage(`OTP sent successfully to +91 ${rawNum.slice(-10)}`);
-      
-      // Auto-trigger an alert showing the mock OTP code for development/testing
-      alert(`[Living Law OTP Code]: ${mockOtp}`);
-    }, 1200);
+    } catch (err: any) {
+      setError(err.message || "Failed to initiate phone authentication.");
+      setLoading(false);
+    }
   };
 
-  const handleVerifyOtp = (e: React.FormEvent) => {
+  const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
 
-    setTimeout(() => {
-      if (otpCode !== generatedOtp && otpCode !== "123456") { // Allow 123456 as bypass
-        setError("Invalid OTP code. Please try again.");
-        setLoading(false);
-        return;
-      }
+    const rawNum = phoneNumber.replace(/\D/g, "");
 
-      // Successful verification
-      const userEmail = `user_${phoneNumber.slice(-4)}@livinglaw.in`;
-      const mockUser = {
-        id: "usr-" + Math.floor(100000 + Math.random() * 900000),
-        email: userEmail,
-        phone: phoneNumber,
-        user_metadata: { full_name: `Client ${phoneNumber.slice(-4)}` }
-      };
-
-      // Save user session in localStorage
-      localStorage.setItem("living_law_mock_user", JSON.stringify(mockUser));
-      
-      // Logged in message
-      setSuccessMessage("OTP verified! Accessing secure workspace...");
-      
+    if (!isSupabaseConfigured || !supabase) {
+      // Local Mock Mode verification
       setTimeout(() => {
-        setLoading(false);
-        router.push("/dashboard");
-      }, 1000);
-    }, 1500);
+        if (otpCode !== generatedOtp && otpCode !== "123456") {
+          setError("Invalid simulated OTP code.");
+          setLoading(false);
+          return;
+        }
+
+        const mockUser = {
+          id: "usr-" + Math.floor(100000 + Math.random() * 900000),
+          email: `user_${rawNum.slice(-4)}@livinglaw.in`,
+          phone: `+91${rawNum}`,
+          user_metadata: { full_name: `Client ${rawNum.slice(-4)}` }
+        };
+
+        localStorage.setItem("living_law_mock_user", JSON.stringify(mockUser));
+        setSuccessMessage("OTP verified! Accessing secure workspace...");
+        
+        setTimeout(() => {
+          setLoading(false);
+          router.push("/dashboard");
+        }, 1000);
+      }, 1500);
+      return;
+    }
+
+    try {
+      // Supabase Real SMS OTP verify
+      const { data, error: verifyError } = await supabase.auth.verifyOtp({
+        phone: `+91${rawNum}`,
+        token: otpCode,
+        type: "sms",
+      });
+
+      if (verifyError) throw verifyError;
+
+      if (data?.user) {
+        // Sync profile inside database
+        const profile = await syncUserProfile(data.user);
+        
+        // Save user state in localStorage to maintain page session matching redirects
+        const mappedUser = {
+          id: data.user.id,
+          email: data.user.email || `user_${rawNum.slice(-4)}@livinglaw.in`,
+          phone: data.user.phone || `+91${rawNum}`,
+          user_metadata: { full_name: profile?.full_name || `Client ${rawNum.slice(-4)}` }
+        };
+        localStorage.setItem("living_law_mock_user", JSON.stringify(mappedUser));
+
+        setSuccessMessage("OTP verified successfully! Accessing workspace...");
+        setTimeout(() => {
+          setLoading(false);
+          router.push("/dashboard");
+        }, 1000);
+      }
+    } catch (err: any) {
+      setError(err.message || "Failed to verify phone OTP.");
+      setLoading(false);
+    }
   };
 
   return (
@@ -114,6 +165,16 @@ export default function LoginPage() {
                 : `Enter the 6-digit OTP code sent to your phone`}
             </p>
           </div>
+
+          {/* Local developer credentials alert */}
+          {!isSupabaseConfigured && (
+            <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl flex items-start gap-2.5 text-amber-400 text-xs">
+              <Info size={16} className="shrink-0 mt-0.5" />
+              <div>
+                <span className="font-bold">Local Mock Mode:</span> Real SMS OTP requires Supabase credentials inside `.env.local`. Generating simulated OTP in browser pop-ups.
+              </div>
+            </div>
+          )}
 
           {/* Feedback Messages */}
           {error && (
