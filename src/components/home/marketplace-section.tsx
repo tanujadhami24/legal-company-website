@@ -30,6 +30,47 @@ export default function MarketplaceSection({
   const [activeTab, setActiveTab] = useState<"business" | "ip" | "compliance">(initialTab);
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
   const [step, setStep] = useState<"details" | "upload" | "checkout" | "paying" | "success">("details");
+
+  const getThemeData = () => {
+    switch (activeTab) {
+      case "business":
+        return {
+          bg: "bg-[#0b2447] text-white",
+          accentText: "text-amber-500 dark:text-amber-400",
+          accentBg: "bg-amber-500",
+          patternColor: "bg-[radial-gradient(#f59e0b_1px,transparent_1px)]",
+          tag: "Living Law Corporate Console",
+          title: "Business Registration Portal",
+          desc: "Incorporate your Private Limited Company, LLP, or Partnership. Instant documentation preparation and government filing with direct legal oversight.",
+          cardHover: "hover:border-amber-500/40",
+          btnHover: "hover:bg-amber-500 hover:text-white"
+        };
+      case "ip":
+        return {
+          bg: "bg-[#112233] text-white",
+          accentText: "text-teal-400",
+          accentBg: "bg-teal-500",
+          patternColor: "bg-[radial-gradient(#14b8a6_1px,transparent_1px)]",
+          tag: "Living Law IP Registry",
+          title: "Trademark & Intellectual Property Portal",
+          desc: "Secure your brand name, logos, and inventions. Rapid online trademark searches and copyright/patent filing services managed by IP attorneys.",
+          cardHover: "hover:border-teal-500/40",
+          btnHover: "hover:bg-teal-500 hover:text-white"
+        };
+      case "compliance":
+        return {
+          bg: "bg-[#1e1b4b] text-white",
+          accentText: "text-rose-400",
+          accentBg: "bg-rose-500",
+          patternColor: "bg-[radial-gradient(#f43f5e_1px,transparent_1px)]",
+          tag: "Living Law Compliance Console",
+          title: "GST, Tax & Compliance Desk",
+          desc: "Keep your legal entity fully compliant. Get GST registrations, file monthly/quarterly returns, and manage annual corporate filings effortlessly.",
+          cardHover: "hover:border-rose-500/40",
+          btnHover: "hover:bg-rose-500 hover:text-white"
+        };
+    }
+  };
   
   // Auth state variables
   const [isAuthOpen, setIsAuthOpen] = useState(false);
@@ -251,17 +292,19 @@ export default function MarketplaceSection({
   };
 
   return (
-    <div className="bg-[#003e5c] text-white transition-colors duration-300 py-16 border-t border-amber-500/10">
+    <div className={`transition-colors duration-500 py-16 border-t border-amber-500/10 ${getThemeData().bg}`}>
       {/* Hero Header */}
       <div className="relative overflow-hidden pb-12">
-        <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[radial-gradient(#e99e24_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div className={`absolute top-0 left-0 w-full h-full opacity-10 [background-size:16px_16px] ${getThemeData().patternColor}`}></div>
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <span className="text-[#e99e24] font-semibold tracking-widest text-xs uppercase block mb-3">Living Law Marketplace</span>
+          <span className={`font-semibold tracking-widest text-xs uppercase block mb-3 ${getThemeData().accentText}`}>
+            {getThemeData().tag}
+          </span>
           <h2 className="text-4xl md:text-5xl font-serif-legal font-bold mb-4">
-            Corporate & IP <span className="text-[#e99e24]">Registration Portal</span>
+            {getThemeData().title}
           </h2>
           <p className="text-sky-100/70 max-w-2xl text-sm md:text-base leading-relaxed">
-            Get your business registered, patents filed, and compliances structured with absolute transparency. Secure e-filings monitored by senior corporate lawyers.
+            {getThemeData().desc}
           </p>
         </div>
       </div>
@@ -314,11 +357,11 @@ export default function MarketplaceSection({
           {getServices().map((service) => (
             <div 
               key={service.id} 
-              className="bg-[#002f45]/50 border border-[#004d73]/40 rounded-2xl p-6 flex flex-col justify-between hover:border-[#e99e24]/40 transition-all duration-300 shadow-sm hover:shadow-md hover:bg-[#002f45]/75"
+              className={`bg-[#002f45]/50 border border-[#004d73]/40 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 shadow-sm hover:shadow-md hover:bg-[#002f45]/75 ${getThemeData().cardHover}`}
             >
               <div>
                 <div className="flex justify-between items-start mb-4">
-                  <h3 className="font-serif-legal text-xl font-bold text-[#e99e24]">
+                  <h3 className={`font-serif-legal text-xl font-bold ${getThemeData().accentText}`}>
                     {service.name}
                   </h3>
                   <span className="bg-[#001f30] text-xs px-2.5 py-1 rounded-md font-medium text-slate-300">
@@ -339,7 +382,7 @@ export default function MarketplaceSection({
                 </div>
                 <button 
                   onClick={() => handleSelectService(service)}
-                  className="bg-white text-slate-950 hover:bg-[#e99e24] hover:text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all duration-200"
+                  className={`bg-white text-slate-950 px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all duration-200 ${getThemeData().btnHover}`}
                 >
                   <span>Apply Now</span>
                   <ArrowRight size={14} />

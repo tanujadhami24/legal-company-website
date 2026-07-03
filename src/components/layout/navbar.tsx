@@ -135,7 +135,7 @@ export default function Navbar() {
               const Icon = link.icon;
               const isActive = pathname === "/" 
                 ? activeSection === link.id
-                : pathname.startsWith(link.href.split("#")[0]);
+                : (link.href.startsWith("/") && pathname.startsWith(link.href.split("#")[0]));
 
               return (
                 <Link
