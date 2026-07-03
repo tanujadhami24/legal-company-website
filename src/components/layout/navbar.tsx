@@ -70,7 +70,6 @@ export default function Navbar() {
   }, [pathname]);
 
   const navLinks = [
-    { href: "/#home", label: "Home", id: "home", icon: Scale },
     { href: "/marketplace", label: "Marketplace", id: "marketplace", icon: ShoppingBag },
     { href: "/notary", label: "Notary & Stamp", id: "notary", icon: FileText },
     { href: "/academy", label: "Academy", id: "academy", icon: Award },
@@ -93,6 +92,11 @@ export default function Navbar() {
           window.history.pushState(null, "", href);
           setActiveSection(id);
         }
+      } else if (href === "/") {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.history.pushState(null, "", "/");
+        setActiveSection("home");
       }
     } else {
       if (href.startsWith("/#") || href === "/" || href === "/#home") {
@@ -111,7 +115,7 @@ export default function Navbar() {
       }`}>
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
 
-          <Link href="/#home" onClick={(e) => handleNavLinkClick(e, "/#home", "home")} className="flex items-center gap-2.5 group">
+          <Link href="/" onClick={(e) => handleNavLinkClick(e, "/", "home")} className="flex items-center gap-2.5 group">
             <div className="p-2 bg-gradient-to-br from-amber-500 to-amber-700 rounded-full border border-amber-400/30 text-white shadow-md shadow-amber-500/5">
               <Scale size={20} className="group-hover:rotate-12 transition-transform duration-300" />
             </div>
