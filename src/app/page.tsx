@@ -5,7 +5,7 @@ import Footer from "@/components/layout/footer";
 
 export default function Home() {
   return (
-    <main className="bg-white dark:bg-[#030712] min-h-screen transition-colors duration-300">
+    <main className="bg-[#030712] min-h-screen transition-colors duration-300">
       <Navbar />
 
       <div id="home">

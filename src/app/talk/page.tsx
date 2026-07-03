@@ -149,7 +149,7 @@ export default function TalkToLawyerPage() {
           </div>
 
           {/* Right panel: Consultation Form */}
-          <div className="bg-white text-slate-900 p-8 rounded-3xl shadow-2xl relative overflow-hidden">
+          <div className="bg-slate-900/80 text-white p-8 rounded-3xl border border-slate-800 shadow-2xl relative overflow-hidden">
             {submitted ? (
               <div className="py-12 text-center space-y-6 animate-in fade-in duration-300">
                 <div className="mx-auto w-16 h-16 bg-emerald-500/10 border border-emerald-500/20 rounded-full flex items-center justify-center text-emerald-500">
@@ -157,8 +157,8 @@ export default function TalkToLawyerPage() {
                 </div>
                 <div className="space-y-2">
                   <h3 className="font-serif-legal font-bold text-2xl">Request Dispatched!</h3>
-                  <p className="text-sm text-slate-500 max-w-sm mx-auto leading-relaxed">
-                    Consultation details have been compiled and sent to <strong className="text-slate-900 font-mono">livinglaw01@gmail.com</strong>. SMS alert has been dispatched to <strong className="text-slate-900 font-mono">+91 7505375151</strong>.
+                  <p className="text-sm text-slate-400 max-w-sm mx-auto leading-relaxed">
+                    Consultation details have been compiled and sent to <strong className="text-white font-mono">livinglaw01@gmail.com</strong>. SMS alert has been dispatched to <strong className="text-white font-mono">+91 7505375151</strong>.
                   </p>
                 </div>
                 <button 
@@ -168,7 +168,7 @@ export default function TalkToLawyerPage() {
                     setEmail("");
                     setMobileNumber("");
                   }}
-                  className="px-6 py-2.5 rounded-xl border border-slate-200 text-xs font-bold hover:bg-slate-50 transition"
+                  className="px-6 py-2.5 rounded-xl border border-slate-800 text-xs font-bold hover:bg-slate-800 transition text-slate-350"
                 >
                   Submit Another Consultation
                 </button>
@@ -176,7 +176,7 @@ export default function TalkToLawyerPage() {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="text-center mb-6">
-                  <h3 className="text-2xl font-serif-legal font-bold text-slate-900">
+                  <h3 className="text-2xl font-serif-legal font-bold text-white">
                     Get expert <br />legal consultation
                   </h3>
                 </div>
@@ -188,7 +188,7 @@ export default function TalkToLawyerPage() {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     placeholder="Full name"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500/50 focus:bg-white"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500/50 text-white placeholder-slate-600"
                   />
 
                   <input 
@@ -197,7 +197,7 @@ export default function TalkToLawyerPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500/50 focus:bg-white"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500/50 text-white placeholder-slate-600"
                   />
 
                   <input 
@@ -206,18 +206,18 @@ export default function TalkToLawyerPage() {
                     value={mobileNumber}
                     onChange={(e) => setMobileNumber(e.target.value)}
                     placeholder="Mobile number"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500/50 focus:bg-white"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500/50 text-white placeholder-slate-600"
                   />
 
                   <select 
                     value={language}
                     onChange={(e) => setLanguage(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500/50 focus:bg-white"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500/50 text-white"
                   >
-                    <option>English</option>
-                    <option>Hindi</option>
-                    <option>Punjabi</option>
-                    <option>Bengali</option>
+                    <option className="bg-slate-900">English</option>
+                    <option className="bg-slate-900">Hindi</option>
+                    <option className="bg-slate-900">Punjabi</option>
+                    <option className="bg-slate-900">Bengali</option>
                   </select>
 
                   <button 
@@ -226,9 +226,9 @@ export default function TalkToLawyerPage() {
                       setTempCategory(selectedCategory);
                       setShowCategoryModal(true);
                     }}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm flex justify-between items-center text-slate-500 focus:outline-none hover:border-slate-300"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-4 py-3 text-sm flex justify-between items-center text-slate-400 focus:outline-none hover:border-slate-700"
                   >
-                    <span className="text-slate-800 font-medium">
+                    <span className="text-slate-200 font-medium">
                       {selectedCategory} • {selectedSubCategory}
                     </span>
                     <ChevronDown size={16} />
@@ -238,7 +238,7 @@ export default function TalkToLawyerPage() {
                 <button 
                   type="submit"
                   disabled={submitting}
-                  className="w-full mt-4 bg-[#030712] hover:bg-slate-900 text-white rounded-2xl py-3.5 text-sm font-semibold flex items-center justify-center gap-2 transition disabled:opacity-50"
+                  className="w-full mt-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white rounded-2xl py-3.5 text-sm font-semibold flex items-center justify-center gap-2 transition disabled:opacity-50 shadow-lg shadow-amber-500/10"
                 >
                   {submitting ? (
                     <Loader2 size={16} className="animate-spin" />
@@ -258,14 +258,14 @@ export default function TalkToLawyerPage() {
       {/* Category Selection Modal */}
       {showCategoryModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
-          <div className="relative w-full max-w-2xl bg-white text-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-slate-100 flex flex-col h-[480px]">
+          <div className="relative w-full max-w-2xl bg-slate-900 text-white rounded-3xl overflow-hidden shadow-2xl border border-slate-800 flex flex-col h-[480px]">
             
             {/* Modal Header */}
-            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
-              <h3 className="text-xl font-serif-legal font-bold text-slate-900">Select your category</h3>
+            <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/40">
+              <h3 className="text-xl font-serif-legal font-bold text-white">Select your category</h3>
               <button 
                 onClick={() => setShowCategoryModal(false)}
-                className="p-1.5 hover:bg-slate-100 rounded-full transition"
+                className="p-1.5 hover:bg-slate-800 rounded-full transition text-slate-400 hover:text-white"
               >
                 <X size={18} />
               </button>
@@ -274,15 +274,15 @@ export default function TalkToLawyerPage() {
             {/* Columns split */}
             <div className="flex-1 flex overflow-hidden">
               {/* Left Column: Categories */}
-              <div className="w-1/2 border-r border-slate-100 overflow-y-auto bg-slate-50/50">
+              <div className="w-1/2 border-r border-slate-800 overflow-y-auto bg-slate-950/20">
                 {Object.keys(categories).map((cat) => (
                   <button
                     key={cat}
                     onClick={() => setTempCategory(cat)}
-                    className={`w-full text-left px-6 py-4 text-xs font-semibold flex justify-between items-center transition border-b border-slate-100/50 ${
+                    className={`w-full text-left px-6 py-4 text-xs font-semibold flex justify-between items-center transition border-b border-slate-800/40 ${
                       tempCategory === cat 
-                        ? "bg-slate-100 text-amber-600 border-l-4 border-l-amber-500" 
-                        : "hover:bg-slate-50 text-slate-700"
+                        ? "bg-slate-950/85 text-amber-500 border-l-4 border-l-amber-500 font-bold" 
+                        : "hover:bg-slate-800/40 text-slate-350"
                     }`}
                   >
                     <span>{cat}</span>
@@ -292,7 +292,7 @@ export default function TalkToLawyerPage() {
               </div>
 
               {/* Right Column: Subcategories */}
-              <div className="w-1/2 overflow-y-auto p-4 space-y-1">
+              <div className="w-1/2 overflow-y-auto p-4 space-y-1 bg-slate-900">
                 {categories[tempCategory]?.map((sub) => (
                   <button
                     key={sub}
@@ -303,8 +303,8 @@ export default function TalkToLawyerPage() {
                     }}
                     className={`w-full text-left px-4 py-3 text-xs rounded-xl transition ${
                       selectedCategory === tempCategory && selectedSubCategory === sub
-                        ? "bg-amber-50 text-amber-600 font-bold"
-                        : "hover:bg-slate-50 text-slate-600"
+                        ? "bg-amber-500/10 text-amber-400 font-bold border border-amber-500/20"
+                        : "hover:bg-slate-800/40 text-slate-400 hover:text-white"
                     }`}
                   >
                     {sub}
@@ -314,10 +314,10 @@ export default function TalkToLawyerPage() {
             </div>
 
             {/* Modal footer */}
-            <div className="px-6 py-4 border-t border-slate-100 bg-slate-50 flex justify-end">
+            <div className="px-6 py-4 border-t border-slate-800 bg-slate-950/40 flex justify-end">
               <button 
                 onClick={() => setShowCategoryModal(false)}
-                className="bg-[#030712] hover:bg-slate-900 text-white px-5 py-2 rounded-xl text-xs font-semibold"
+                className="bg-amber-500 hover:bg-amber-600 text-white px-5 py-2 rounded-xl text-xs font-semibold shadow-md shadow-amber-500/10"
               >
                 Done
               </button>

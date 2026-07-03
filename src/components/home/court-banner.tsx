@@ -4,19 +4,19 @@ import { Landmark, ShieldCheck } from "lucide-react";
 
 export default function CourtBanner() {
   return (
-    <section className="relative w-full overflow-hidden bg-white dark:bg-[#030712]">
+    <section className="relative w-full overflow-hidden bg-[#030712]">
       
       {/* Background Image of Supreme Court with dark overlay */}
       <div className="relative h-[300px] md:h-[400px] w-full">
         <img 
           src="/supreme_court_india.png" 
           alt="Supreme Court of India"
-          className="w-full h-full object-cover object-center opacity-65 dark:opacity-45 scale-105 transition-transform duration-10000 hover:scale-100"
+          className="w-full h-full object-cover object-center opacity-45 scale-105 transition-transform duration-10000 hover:scale-100"
         />
         
         {/* Gradients blending into the page sections */}
-        <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-white dark:from-[#030712] dark:via-transparent dark:to-[#030712] opacity-100"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-transparent to-white/20 dark:from-[#030712]/50 dark:via-transparent dark:to-[#030712]/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#030712] via-transparent to-[#030712] opacity-100"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#030712]/50 via-transparent to-[#030712]/50"></div>
         
         {/* Centered Institutional Text Overlay */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 space-y-4">

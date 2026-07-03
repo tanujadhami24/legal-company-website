@@ -6,7 +6,7 @@ import OdrSection from "@/components/home/odr-section";
 
 export default function OdrPage() {
   return (
-    <div className="bg-white dark:bg-[#030712] min-h-screen text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <div className="bg-[#030712] min-h-screen text-slate-100 transition-colors duration-300">
       <Navbar />
       <OdrSection />
       <Footer />

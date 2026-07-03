@@ -435,7 +435,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="bg-white dark:bg-[#030712] min-h-screen text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <div className="bg-[#030712] min-h-screen text-slate-100 transition-colors duration-300">
       <Navbar />
 
       {/* Header Panel */}
@@ -481,7 +481,7 @@ export default function DashboardPage() {
       <main className="max-w-7xl mx-auto px-6 py-12">
         <div className="max-w-4xl mx-auto space-y-6">
             <div className="space-y-6 animate-in fade-in duration-300">
-                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
+                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
                   <div className="flex justify-between items-center border-b border-slate-100 dark:border-slate-800/80 pb-4">
                     <h3 className="font-serif-legal font-bold text-xl flex items-center gap-2">
                       <User className="text-amber-500" size={20} />
@@ -537,7 +537,7 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Subscriptions purchase modules */}
-                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
+                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
                   <h4 className="font-serif-legal font-bold text-lg border-b border-slate-100 dark:border-slate-800 pb-3">
                     Bundled Onboarding Packages
                   </h4>
@@ -560,7 +560,7 @@ export default function DashboardPage() {
                       </ul>
                       <button 
                         onClick={() => handleBuySubscription("6-Month Academy Bundle", "Complimentary")}
-                        className="w-full bg-slate-950 dark:bg-white text-white dark:text-black font-semibold py-2 rounded-xl text-xs"
+                        className="w-full bg-white text-slate-950 hover:opacity-90 transition font-semibold py-2 rounded-xl text-xs"
                       >
                         Activate Plan
                       </button>

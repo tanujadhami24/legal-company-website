@@ -33,15 +33,15 @@ export default function MarketplaceSection({
 
   const getThemeData = () => {
     const commonTheme = {
-      bg: "bg-slate-50 dark:bg-[#030712] text-slate-900 dark:text-slate-100",
-      accentText: "text-amber-600 dark:text-amber-400",
+      bg: "bg-[#030712] text-slate-100",
+      accentText: "text-amber-500",
       accentBg: "bg-amber-500",
-      patternColor: "bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] dark:bg-[radial-gradient(#1e293b_1px,transparent_1px)]",
-      cardBg: "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800",
-      cardHover: "hover:border-amber-500/40 dark:hover:border-amber-500/30 hover:shadow-lg",
-      btnHover: "hover:bg-amber-600 dark:hover:bg-amber-500",
-      descText: "text-slate-600 dark:text-slate-400",
-      pillBg: "bg-slate-100 dark:bg-slate-950 text-slate-600 dark:text-slate-400",
+      patternColor: "bg-[radial-gradient(#1e293b_1px,transparent_1px)]",
+      cardBg: "bg-slate-900 border border-slate-800",
+      cardHover: "hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/5",
+      btnHover: "hover:bg-amber-600",
+      descText: "text-slate-400",
+      pillBg: "bg-slate-950 text-slate-400",
     };
 
     switch (activeTab) {
@@ -55,10 +55,10 @@ export default function MarketplaceSection({
       case "ip":
         return {
           ...commonTheme,
-          accentText: "text-teal-600 dark:text-teal-400",
+          accentText: "text-teal-400",
           accentBg: "bg-teal-500",
-          cardHover: "hover:border-teal-500/40 dark:hover:border-teal-500/30 hover:shadow-lg",
-          btnHover: "hover:bg-teal-600 dark:hover:bg-teal-500",
+          cardHover: "hover:border-teal-500/30 hover:shadow-lg hover:shadow-teal-500/5",
+          btnHover: "hover:bg-teal-600",
           tag: "Living Law IP Registry",
           title: "Trademark & Intellectual Property Portal",
           desc: "Secure your brand name, logos, and inventions. Rapid online trademark searches and copyright/patent filing services managed by IP attorneys.",
@@ -66,10 +66,10 @@ export default function MarketplaceSection({
       case "compliance":
         return {
           ...commonTheme,
-          accentText: "text-rose-600 dark:text-rose-400",
+          accentText: "text-rose-400",
           accentBg: "bg-rose-500",
-          cardHover: "hover:border-rose-500/40 dark:hover:border-rose-500/30 hover:shadow-lg",
-          btnHover: "hover:bg-rose-600 dark:hover:bg-rose-500",
+          cardHover: "hover:border-rose-500/30 hover:shadow-lg hover:shadow-rose-500/5",
+          btnHover: "hover:bg-rose-600",
           tag: "Living Law Compliance Console",
           title: "GST, Tax & Compliance Desk",
           desc: "Keep your legal entity fully compliant. Get GST registrations, file monthly/quarterly returns, and manage annual corporate filings effortlessly.",
@@ -243,13 +243,13 @@ export default function MarketplaceSection({
       <main className="max-w-7xl mx-auto px-6 py-4">
         {/* Navigation Tabs */}
         {!hideTabs && (
-          <div className="flex flex-wrap gap-2 border-b border-slate-200 dark:border-slate-800 pb-4 mb-8">
+          <div className="flex flex-wrap gap-2 border-b border-slate-800 pb-4 mb-8">
             <button
               onClick={() => setActiveTab("business")}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 ${
                 activeTab === "business"
                   ? "bg-amber-500 text-white shadow-lg shadow-amber-500/20"
-                  : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-slate-600 dark:text-slate-300"
+                  : "bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300"
               }`}
             >
               <Building2 size={18} />
@@ -261,7 +261,7 @@ export default function MarketplaceSection({
               className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 ${
                 activeTab === "ip"
                   ? "bg-teal-500 text-white shadow-lg shadow-teal-500/20"
-                  : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-slate-600 dark:text-slate-300"
+                  : "bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300"
               }`}
             >
               <ShieldCheck size={18} />
@@ -273,7 +273,7 @@ export default function MarketplaceSection({
               className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 ${
                 activeTab === "compliance"
                   ? "bg-rose-500 text-white shadow-lg shadow-rose-500/20"
-                  : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-slate-600 dark:text-slate-300"
+                  : "bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300"
               }`}
             >
               <ClipboardCheck size={18} />
