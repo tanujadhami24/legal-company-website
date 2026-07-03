@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { supabase, isSupabaseConfigured, syncUserProfile } from "@/lib/supabase";
-import { X, Mail, Lock, ShieldCheck, Loader2, Info } from "lucide-react";
+import { X, Mail, Phone, ShieldCheck, Loader2, Info } from "lucide-react";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -11,10 +11,8 @@ interface AuthModalProps {
 }
 
 export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
-  const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -34,7 +32,8 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
         const mockUser = {
           id: "mock-user-123",
           email: email,
-          user_metadata: { full_name: isSignUp ? fullName : email.split("@")[0] }
+          phone: phone,
+          user_metadata: { full_name: email.split("@")[0] }
         };
         // Save mock user in localStorage
         localStorage.setItem("living_law_mock_user", JSON.stringify(mockUser));
@@ -45,44 +44,39 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
     }
 
     try {
-      if (isSignUp) {
-        // Sign up flow
-        const { data, error: signUpError } = await supabase.auth.signUp({
+      // Generate a dummy password derived from email + phone for Supabase DB constraints
+      const dummyPassword = email + "LL" + phone.replace(/\D/g, "");
+
+      // Try signing in
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password: dummyPassword,
+      });
+
+      if (signInError) {
+        // If sign in fails, auto-sign up user
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
           email,
-          password,
+          password: dummyPassword,
           options: {
             data: {
-              full_name: fullName,
+              full_name: email.split("@")[0],
+              phone_number: phone,
             }
           }
         });
 
         if (signUpError) throw signUpError;
-        
-        if (data?.user) {
-          // Sync to profiles table
-          await syncUserProfile(data.user);
-          setMessage("Registration successful! Please check your email for verification link.");
-          setTimeout(() => {
-            setIsSignUp(false);
-            setMessage(null);
-          }, 3000);
-        }
-      } else {
-        // Sign in flow
-        const { data, error: signInError } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
 
-        if (signInError) throw signInError;
-
-        if (data?.user) {
-          // Sync profile to database if it doesn't exist
-          const profile = await syncUserProfile(data.user);
-          if (onSuccess) onSuccess({ ...data.user, profile });
+        if (signUpData?.user) {
+          const profile = await syncUserProfile(signUpData.user);
+          if (onSuccess) onSuccess({ ...signUpData.user, profile });
           onClose();
         }
+      } else if (signInData?.user) {
+        const profile = await syncUserProfile(signInData.user);
+        if (onSuccess) onSuccess({ ...signInData.user, profile });
+        onClose();
       }
     } catch (err: any) {
       setError(err.message || "An authentication error occurred.");
@@ -109,10 +103,10 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
             <ShieldCheck size={24} />
           </div>
           <h3 className="text-xl font-serif-legal font-bold text-white tracking-wide">
-            {isSignUp ? "Create Chambers Account" : "Access Legal Chambers"}
+            Access Legal Chambers
           </h3>
           <p className="text-xs text-slate-400 mt-1 font-sans">
-            {isSignUp ? "Sign up to join our secure litigation and notary workspace" : "Log in to check cases, notary deeds, and filings"}
+            Enter your email and mobile number to access your secure litigation workspace
           </p>
         </div>
 
@@ -140,22 +134,6 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
 
         {/* Form */}
         <form onSubmit={handleAuth} className="space-y-4">
-          {isSignUp && (
-            <div className="space-y-1">
-              <label className="text-[11px] uppercase tracking-wider font-bold text-slate-400 block font-mono">
-                Full Name
-              </label>
-              <input 
-                type="text" 
-                required
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                placeholder="L. N. Rao"
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-hidden focus:border-amber-500/50"
-              />
-            </div>
-          )}
-
           <div className="space-y-1">
             <label className="text-[11px] uppercase tracking-wider font-bold text-slate-400 block font-mono">
               Email Address
@@ -175,18 +153,18 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
 
           <div className="space-y-1">
             <label className="text-[11px] uppercase tracking-wider font-bold text-slate-400 block font-mono">
-              Password
+              Mobile Number
             </label>
             <div className="relative">
               <input 
-                type="password" 
+                type="tel" 
                 required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="+91 98765 43210"
                 className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-hidden focus:border-amber-500/50"
               />
-              <Lock size={16} className="absolute left-3.5 top-3.5 text-slate-500" />
+              <Phone size={16} className="absolute left-3.5 top-3.5 text-slate-500" />
             </div>
           </div>
 
@@ -199,22 +177,10 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
             {loading ? (
               <Loader2 size={16} className="animate-spin" />
             ) : (
-              <span>{isSignUp ? "Sign Up" : "Log In"}</span>
+              <span>Access Workspace</span>
             )}
           </button>
         </form>
-
-        {/* Toggle Mode */}
-        <div className="mt-6 text-center text-xs text-slate-400 font-sans">
-          {isSignUp ? "Already have a legal profile?" : "New to Living Law Chambers?"}{" "}
-          <button 
-            type="button"
-            onClick={() => setIsSignUp(!isSignUp)}
-            className="text-amber-500 hover:text-amber-400 font-semibold underline transition ml-1"
-          >
-            {isSignUp ? "Log In here" : "Register here"}
-          </button>
-        </div>
 
       </div>
     </div>
