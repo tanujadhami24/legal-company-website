@@ -20,9 +20,7 @@ export default function Footer() {
               student counselling, and
               one-on-one consultation
               services with trusted expertise.
-            </p>
-
-          </div>
+            </p>          </div>
 
           {/* Quick Links */}
           <div>
@@ -32,9 +30,7 @@ export default function Footer() {
             <div className="flex flex-col gap-4 text-gray-400">
               <Link href="/" className="hover:text-amber-400 transition-colors">Home</Link>
               <Link href="/marketplace" className="hover:text-amber-400 transition-colors">Service Marketplace</Link>
-              <Link href="/notary" className="hover:text-amber-400 transition-colors">Notary & Stamp Duty</Link>
               <Link href="/odr" className="hover:text-amber-400 transition-colors">ODR Case Chambers</Link>
-              <Link href="/academy" className="hover:text-amber-400 transition-colors">Student Academy</Link>
               <Link href="/dashboard" className="hover:text-amber-400 transition-colors">Professional Login</Link>
             </div>
           </div>
@@ -48,7 +44,6 @@ export default function Footer() {
               <Link href="/marketplace" className="hover:text-amber-400 transition-colors">Business Registration</Link>
               <Link href="/marketplace" className="hover:text-amber-400 transition-colors">Trademark & IP Filing</Link>
               <Link href="/marketplace" className="hover:text-amber-400 transition-colors">GST & Compliances</Link>
-              <Link href="/notary" className="hover:text-amber-400 transition-colors">Aadhaar e-Stamping</Link>
               <Link href="/odr" className="hover:text-amber-400 transition-colors">Settlement Calculators</Link>
             </div>
           </div>
