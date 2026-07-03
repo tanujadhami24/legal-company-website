@@ -74,7 +74,7 @@ export default function Navbar() {
     { href: "/marketplace", label: "Marketplace", id: "marketplace", icon: ShoppingBag },
     { href: "/#notary", label: "Notary & Stamp", id: "notary", icon: FileText },
     { href: "/#academy", label: "Academy", id: "academy", icon: Award },
-    { href: "/#odr", label: "ODR & Dispute", id: "odr", icon: ShieldAlert },
+    { href: "/odr", label: "ODR & Dispute", id: "odr", icon: ShieldAlert },
     { href: "#contact", label: "Contact Us", id: "contact", icon: PhoneCall },
   ];
 
