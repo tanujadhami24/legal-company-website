@@ -20,7 +20,8 @@ export default function Footer() {
               student counselling, and
               one-on-one consultation
               services with trusted expertise.
-            </p>          </div>
+            </p>
+          </div>
 
           {/* Quick Links */}
           <div>
@@ -29,7 +30,9 @@ export default function Footer() {
             </h3>
             <div className="flex flex-col gap-4 text-gray-400">
               <Link href="/" className="hover:text-amber-400 transition-colors">Home</Link>
-              <Link href="/marketplace" className="hover:text-amber-400 transition-colors">Service Marketplace</Link>
+              <Link href="/business" className="hover:text-amber-400 transition-colors">Business Registration</Link>
+              <Link href="/trademark" className="hover:text-amber-400 transition-colors">Trademark & IP</Link>
+              <Link href="/compliance" className="hover:text-amber-400 transition-colors">Compliances & Government</Link>
               <Link href="/odr" className="hover:text-amber-400 transition-colors">ODR Case Chambers</Link>
               <Link href="/dashboard" className="hover:text-amber-400 transition-colors">Professional Login</Link>
             </div>
@@ -41,9 +44,9 @@ export default function Footer() {
               Services
             </h3>
             <div className="flex flex-col gap-4 text-gray-400">
-              <Link href="/marketplace" className="hover:text-amber-400 transition-colors">Business Registration</Link>
-              <Link href="/marketplace" className="hover:text-amber-400 transition-colors">Trademark & IP Filing</Link>
-              <Link href="/marketplace" className="hover:text-amber-400 transition-colors">GST & Compliances</Link>
+              <Link href="/business" className="hover:text-amber-400 transition-colors">Business Registration</Link>
+              <Link href="/trademark" className="hover:text-amber-400 transition-colors">Trademark & IP Filing</Link>
+              <Link href="/compliance" className="hover:text-amber-400 transition-colors">GST & Compliances</Link>
               <Link href="/odr" className="hover:text-amber-400 transition-colors">Settlement Calculators</Link>
             </div>
           </div>

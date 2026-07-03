@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Scale, ShieldAlert, Award, FileText, LayoutDashboard, ShoppingBag, PhoneCall, Mail, X, Phone } from "lucide-react";
+import { Scale, ShieldAlert, Award, FileText, LayoutDashboard, ShoppingBag, PhoneCall, Mail, X, Phone, Building2, ShieldCheck, ClipboardCheck } from "lucide-react";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -70,7 +70,9 @@ export default function Navbar() {
   }, [pathname]);
 
   const navLinks = [
-    { href: "/marketplace", label: "Marketplace", id: "marketplace", icon: ShoppingBag },
+    { href: "/business", label: "Business Registration", id: "business", icon: Building2 },
+    { href: "/trademark", label: "Trademark & IP", id: "trademark", icon: ShieldCheck },
+    { href: "/compliance", label: "Compliances", id: "compliance", icon: ClipboardCheck },
     { href: "/odr", label: "ODR & Dispute", id: "odr", icon: ShieldAlert },
     { href: "#contact", label: "Contact Us", id: "contact", icon: PhoneCall },
   ];

@@ -18,8 +18,16 @@ interface ServiceItem {
   docs: string[];
 }
 
-export default function MarketplaceSection() {
-  const [activeTab, setActiveTab] = useState<"business" | "ip" | "compliance">("business");
+interface MarketplaceSectionProps {
+  initialTab?: "business" | "ip" | "compliance";
+  hideTabs?: boolean;
+}
+
+export default function MarketplaceSection({
+  initialTab = "business",
+  hideTabs = false
+}: MarketplaceSectionProps) {
+  const [activeTab, setActiveTab] = useState<"business" | "ip" | "compliance">(initialTab);
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
   const [step, setStep] = useState<"details" | "upload" | "checkout" | "paying" | "success">("details");
   
@@ -261,43 +269,45 @@ export default function MarketplaceSection() {
       {/* Main Directory Area */}
       <main className="max-w-7xl mx-auto px-6 py-4">
         {/* Navigation Tabs */}
-        <div className="flex flex-wrap gap-2 border-b border-[#004d73]/40 pb-4 mb-8">
-          <button
-            onClick={() => setActiveTab("business")}
-            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 ${
-              activeTab === "business"
-                ? "bg-[#e99e24] text-white shadow-lg shadow-[#e99e24]/20"
-                : "bg-[#002f45]/50 border border-[#004d73]/40 hover:border-[#004d73] text-sky-100/80"
-            }`}
-          >
-            <Building2 size={18} />
-            <span>Business Registration</span>
-          </button>
-          
-          <button
-            onClick={() => setActiveTab("ip")}
-            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 ${
-              activeTab === "ip"
-                ? "bg-[#e99e24] text-white shadow-lg shadow-[#e99e24]/20"
-                : "bg-[#002f45]/50 border border-[#004d73]/40 hover:border-[#004d73] text-sky-100/80"
-            }`}
-          >
-            <ShieldCheck size={18} />
-            <span>Trademark & IP</span>
-          </button>
+        {!hideTabs && (
+          <div className="flex flex-wrap gap-2 border-b border-[#004d73]/40 pb-4 mb-8">
+            <button
+              onClick={() => setActiveTab("business")}
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 ${
+                activeTab === "business"
+                  ? "bg-[#e99e24] text-white shadow-lg shadow-[#e99e24]/20"
+                  : "bg-[#002f45]/50 border border-[#004d73]/40 hover:border-[#004d73] text-sky-100/80"
+              }`}
+            >
+              <Building2 size={18} />
+              <span>Business Registration</span>
+            </button>
+            
+            <button
+              onClick={() => setActiveTab("ip")}
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 ${
+                activeTab === "ip"
+                  ? "bg-[#e99e24] text-white shadow-lg shadow-[#e99e24]/20"
+                  : "bg-[#002f45]/50 border border-[#004d73]/40 hover:border-[#004d73] text-sky-100/80"
+              }`}
+            >
+              <ShieldCheck size={18} />
+              <span>Trademark & IP</span>
+            </button>
 
-          <button
-            onClick={() => setActiveTab("compliance")}
-            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 ${
-              activeTab === "compliance"
-                ? "bg-[#e99e24] text-white shadow-lg shadow-[#e99e24]/20"
-                : "bg-[#002f45]/50 border border-[#004d73]/40 hover:border-[#004d73] text-sky-100/80"
-            }`}
-          >
-            <ClipboardCheck size={18} />
-            <span>Compliances & Government</span>
-          </button>
-        </div>
+            <button
+              onClick={() => setActiveTab("compliance")}
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 ${
+                activeTab === "compliance"
+                  ? "bg-[#e99e24] text-white shadow-lg shadow-[#e99e24]/20"
+                  : "bg-[#002f45]/50 border border-[#004d73]/40 hover:border-[#004d73] text-sky-100/80"
+              }`}
+            >
+              <ClipboardCheck size={18} />
+              <span>Compliances & Government</span>
+            </button>
+          </div>
+        )}
 
         {/* Directory Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
