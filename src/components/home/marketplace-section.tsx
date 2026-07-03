@@ -32,42 +32,47 @@ export default function MarketplaceSection({
   const [step, setStep] = useState<"details" | "upload" | "checkout" | "paying" | "success">("details");
 
   const getThemeData = () => {
+    const commonTheme = {
+      bg: "bg-slate-50 dark:bg-[#030712] text-slate-900 dark:text-slate-100",
+      accentText: "text-amber-600 dark:text-amber-400",
+      accentBg: "bg-amber-500",
+      patternColor: "bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] dark:bg-[radial-gradient(#1e293b_1px,transparent_1px)]",
+      cardBg: "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800",
+      cardHover: "hover:border-amber-500/40 dark:hover:border-amber-500/30 hover:shadow-lg",
+      btnHover: "hover:bg-amber-600 dark:hover:bg-amber-500",
+      descText: "text-slate-600 dark:text-slate-400",
+      pillBg: "bg-slate-100 dark:bg-slate-950 text-slate-600 dark:text-slate-400",
+    };
+
     switch (activeTab) {
       case "business":
         return {
-          bg: "bg-[#0b2447] text-white",
-          accentText: "text-amber-500 dark:text-amber-400",
-          accentBg: "bg-amber-500",
-          patternColor: "bg-[radial-gradient(#f59e0b_1px,transparent_1px)]",
+          ...commonTheme,
           tag: "Living Law Corporate Console",
           title: "Business Registration Portal",
           desc: "Incorporate your Private Limited Company, LLP, or Partnership. Instant documentation preparation and government filing with direct legal oversight.",
-          cardHover: "hover:border-amber-500/40",
-          btnHover: "hover:bg-amber-500 hover:text-white"
         };
       case "ip":
         return {
-          bg: "bg-[#112233] text-white",
-          accentText: "text-teal-400",
+          ...commonTheme,
+          accentText: "text-teal-600 dark:text-teal-400",
           accentBg: "bg-teal-500",
-          patternColor: "bg-[radial-gradient(#14b8a6_1px,transparent_1px)]",
+          cardHover: "hover:border-teal-500/40 dark:hover:border-teal-500/30 hover:shadow-lg",
+          btnHover: "hover:bg-teal-600 dark:hover:bg-teal-500",
           tag: "Living Law IP Registry",
           title: "Trademark & Intellectual Property Portal",
           desc: "Secure your brand name, logos, and inventions. Rapid online trademark searches and copyright/patent filing services managed by IP attorneys.",
-          cardHover: "hover:border-teal-500/40",
-          btnHover: "hover:bg-teal-500 hover:text-white"
         };
       case "compliance":
         return {
-          bg: "bg-[#1e1b4b] text-white",
-          accentText: "text-rose-400",
+          ...commonTheme,
+          accentText: "text-rose-600 dark:text-rose-400",
           accentBg: "bg-rose-500",
-          patternColor: "bg-[radial-gradient(#f43f5e_1px,transparent_1px)]",
+          cardHover: "hover:border-rose-500/40 dark:hover:border-rose-500/30 hover:shadow-lg",
+          btnHover: "hover:bg-rose-600 dark:hover:bg-rose-500",
           tag: "Living Law Compliance Console",
           title: "GST, Tax & Compliance Desk",
           desc: "Keep your legal entity fully compliant. Get GST registrations, file monthly/quarterly returns, and manage annual corporate filings effortlessly.",
-          cardHover: "hover:border-rose-500/40",
-          btnHover: "hover:bg-rose-500 hover:text-white"
         };
     }
   };
@@ -217,7 +222,7 @@ export default function MarketplaceSection({
   };
 
   return (
-    <div className={`transition-colors duration-500 py-16 border-t border-amber-500/10 ${getThemeData().bg}`}>
+    <div className={`transition-colors duration-500 py-16 border-t border-slate-200 dark:border-slate-800 ${getThemeData().bg}`}>
       {/* Hero Header */}
       <div className="relative overflow-hidden pb-12">
         <div className={`absolute top-0 left-0 w-full h-full opacity-10 [background-size:16px_16px] ${getThemeData().patternColor}`}></div>
@@ -228,7 +233,7 @@ export default function MarketplaceSection({
           <h2 className="text-4xl md:text-5xl font-serif-legal font-bold mb-4">
             {getThemeData().title}
           </h2>
-          <p className="text-sky-100/70 max-w-2xl text-sm md:text-base leading-relaxed">
+          <p className={`max-w-2xl text-sm md:text-base leading-relaxed ${getThemeData().descText}`}>
             {getThemeData().desc}
           </p>
         </div>
@@ -238,13 +243,13 @@ export default function MarketplaceSection({
       <main className="max-w-7xl mx-auto px-6 py-4">
         {/* Navigation Tabs */}
         {!hideTabs && (
-          <div className="flex flex-wrap gap-2 border-b border-[#004d73]/40 pb-4 mb-8">
+          <div className="flex flex-wrap gap-2 border-b border-slate-200 dark:border-slate-800 pb-4 mb-8">
             <button
               onClick={() => setActiveTab("business")}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 ${
                 activeTab === "business"
-                  ? "bg-[#e99e24] text-white shadow-lg shadow-[#e99e24]/20"
-                  : "bg-[#002f45]/50 border border-[#004d73]/40 hover:border-[#004d73] text-sky-100/80"
+                  ? "bg-amber-500 text-white shadow-lg shadow-amber-500/20"
+                  : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-slate-600 dark:text-slate-300"
               }`}
             >
               <Building2 size={18} />
@@ -255,8 +260,8 @@ export default function MarketplaceSection({
               onClick={() => setActiveTab("ip")}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 ${
                 activeTab === "ip"
-                  ? "bg-[#e99e24] text-white shadow-lg shadow-[#e99e24]/20"
-                  : "bg-[#002f45]/50 border border-[#004d73]/40 hover:border-[#004d73] text-sky-100/80"
+                  ? "bg-teal-500 text-white shadow-lg shadow-teal-500/20"
+                  : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-slate-600 dark:text-slate-300"
               }`}
             >
               <ShieldCheck size={18} />
@@ -267,8 +272,8 @@ export default function MarketplaceSection({
               onClick={() => setActiveTab("compliance")}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 ${
                 activeTab === "compliance"
-                  ? "bg-[#e99e24] text-white shadow-lg shadow-[#e99e24]/20"
-                  : "bg-[#002f45]/50 border border-[#004d73]/40 hover:border-[#004d73] text-sky-100/80"
+                  ? "bg-rose-500 text-white shadow-lg shadow-rose-500/20"
+                  : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-slate-600 dark:text-slate-300"
               }`}
             >
               <ClipboardCheck size={18} />
@@ -282,26 +287,26 @@ export default function MarketplaceSection({
           {getServices().map((service) => (
             <div 
               key={service.id} 
-              className={`bg-[#002f45]/50 border border-[#004d73]/40 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 shadow-sm hover:shadow-md hover:bg-[#002f45]/75 ${getThemeData().cardHover}`}
+              className={`rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 shadow-sm border ${getThemeData().cardBg} ${getThemeData().cardHover}`}
             >
               <div>
                 <div className="flex justify-between items-start mb-4">
                   <h3 className={`font-serif-legal text-xl font-bold ${getThemeData().accentText}`}>
                     {service.name}
                   </h3>
-                  <span className="bg-[#001f30] text-xs px-2.5 py-1 rounded-md font-medium text-slate-300">
+                  <span className={`text-xs px-2.5 py-1 rounded-md font-medium ${getThemeData().pillBg}`}>
                     {service.duration}
                   </span>
                 </div>
-                <p className="text-sky-100/70 text-sm leading-relaxed mb-6">
+                <p className={`text-sm leading-relaxed mb-6 ${getThemeData().descText}`}>
                   {service.desc}
                 </p>
               </div>
 
-              <div className="border-t border-[#004d73]/30 pt-4 mt-4 flex items-center justify-end">
+              <div className="border-t border-slate-100 dark:border-slate-800/80 pt-4 mt-4 flex items-center justify-end">
                 <button 
                   onClick={() => handleSelectService(service)}
-                  className={`bg-white text-slate-950 px-5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all duration-200 ${getThemeData().btnHover}`}
+                  className={`bg-slate-950 text-white dark:bg-white dark:text-black hover:opacity-90 px-5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all duration-200`}
                 >
                   <span>Apply Now</span>
                   <ArrowRight size={14} />
