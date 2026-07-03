@@ -74,7 +74,8 @@ export default function Navbar() {
     { href: "/trademark", label: "Trademark & IP", id: "trademark", icon: ShieldCheck },
     { href: "/compliance", label: "Compliances", id: "compliance", icon: ClipboardCheck },
     { href: "/odr", label: "ODR & Dispute", id: "odr", icon: ShieldAlert },
-    { href: "#contact", label: "Contact Us", id: "contact", icon: PhoneCall },
+    { href: "/talk", label: "Talk to Lawyer", id: "talk", icon: PhoneCall },
+    { href: "#contact", label: "Contact Us", id: "contact", icon: Mail },
   ];
 
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, id: string) => {
