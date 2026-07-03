@@ -174,7 +174,6 @@ export default function MarketplaceSection({
     }
     setStep("checkout");
   };
-
   const handlePayment = async () => {
     if (!currentUser) {
       setIsAuthOpen(true);
@@ -182,85 +181,11 @@ export default function MarketplaceSection({
     }
 
     setStep("paying");
-    const totalAmount = (selectedService?.price || 0) + 1000 + ((selectedService?.price || 0) * 0.18);
-
-    try {
-      const orderRes = await fetch("/api/payments/create-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: totalAmount, serviceId: selectedService?.id }),
-      });
-      const orderData = await orderRes.json();
-
-      if (orderRes.status !== 200 || !orderData.id) {
-        throw new Error(orderData.error || "Failed to initiate payment gateway.");
-      }
-
-      if (orderData.isMock) {
-        setTimeout(async () => {
-          await saveCompletedRegistration(orderData.id, totalAmount);
-          setStep("success");
-        }, 2000);
-        return;
-      }
-
-      const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_...",
-        amount: orderData.amount,
-        currency: "INR",
-        name: "Living Law Chambers",
-        description: selectedService?.name,
-        order_id: orderData.id,
-        handler: async function (response: any) {
-          try {
-            setStep("paying");
-            const verifyRes = await fetch("/api/payments/verify", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-                userId: currentUser.id,
-                amount: totalAmount,
-                serviceId: selectedService?.id,
-              }),
-            });
-
-            const verifyData = await verifyRes.json();
-            if (verifyRes.status === 200 && verifyData.verified) {
-              await saveCompletedRegistration(orderData.id, totalAmount);
-              setStep("success");
-            } else {
-              alert("Payment verification failed: " + (verifyData.error || "Invalid signature"));
-              setStep("checkout");
-            }
-          } catch (err) {
-            console.error("Verification error:", err);
-            alert("Verification process failed.");
-            setStep("checkout");
-          }
-        },
-        prefill: {
-          email: currentUser.email || contactEmail,
-        },
-        theme: {
-          color: "#d4af37",
-        },
-      };
-
-      const rzp = new (window as any).Razorpay(options);
-      rzp.on("payment.failed", function (response: any) {
-        alert("Payment failed: " + response.error.description);
-        setStep("checkout");
-      });
-      rzp.open();
-
-    } catch (err: any) {
-      console.error(err);
-      alert(err.message || "Payment service error.");
-      setStep("checkout");
-    }
+    setTimeout(async () => {
+      const mockOrderId = "REG-" + Math.floor(100000 + Math.random() * 900000);
+      await saveCompletedRegistration(mockOrderId, 0);
+      setStep("success");
+    }, 2000);
   };
 
   const saveCompletedRegistration = async (orderId: string, fee: number) => {
@@ -373,16 +298,10 @@ export default function MarketplaceSection({
                 </p>
               </div>
 
-              <div className="border-t border-[#004d73]/30 pt-4 mt-4 flex items-center justify-between">
-                <div>
-                  <span className="text-xs text-sky-200/50 block uppercase tracking-wider">Start Fee</span>
-                  <span className="text-xl font-extrabold text-white">
-                    ₹{service.price.toLocaleString("en-IN")}
-                  </span>
-                </div>
+              <div className="border-t border-[#004d73]/30 pt-4 mt-4 flex items-center justify-end">
                 <button 
                   onClick={() => handleSelectService(service)}
-                  className={`bg-white text-slate-950 px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all duration-200 ${getThemeData().btnHover}`}
+                  className={`bg-white text-slate-950 px-5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all duration-200 ${getThemeData().btnHover}`}
                 >
                   <span>Apply Now</span>
                   <ArrowRight size={14} />
@@ -519,31 +438,31 @@ export default function MarketplaceSection({
 
               {step === "checkout" && (
                 <div className="space-y-6">
-                  <h3 className="font-serif-legal font-semibold text-lg">Fee Breakdown</h3>
+                  <h3 className="font-serif-legal font-semibold text-lg">Application Details</h3>
                   
                   <div className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-xl p-5 space-y-3">
                     <div className="flex justify-between text-sm">
-                      <span className="text-slate-400">Platform/Professional Service Fee</span>
-                      <span>₹{selectedService.price.toLocaleString("en-IN")}</span>
+                      <span className="text-slate-400">Filing Category</span>
+                      <span>{selectedService.name}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-slate-400">Government Stamp & Registrar Fees</span>
-                      <span>₹1,000</span>
+                      <span className="text-slate-400">Estimated Processing Time</span>
+                      <span>{selectedService.duration}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-slate-400">GST Registration GST Tax (18%)</span>
-                      <span>₹{(selectedService.price * 0.18).toFixed(0)}</span>
+                      <span className="text-slate-400">Document Upload Status</span>
+                      <span className="text-emerald-500 font-medium">All Uploaded</span>
                     </div>
                     <hr className="border-slate-200 dark:border-slate-800" />
                     <div className="flex justify-between font-bold text-base">
-                      <span className="text-amber-500">Total Payable Amount</span>
-                      <span>₹{(selectedService.price + 1000 + (selectedService.price * 0.18)).toLocaleString("en-IN", {maximumFractionDigits:0})}</span>
+                      <span className="text-slate-500">Service Fee</span>
+                      <span className="text-emerald-500">Complimentary / Review Mode</span>
                     </div>
                   </div>
 
                   <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 text-xs flex gap-2 text-emerald-600 dark:text-emerald-400">
                     <CheckCircle2 size={16} className="shrink-0" />
-                    <span>Razorpay Secure Escrow protects this payment. Service delivery is guaranteed in {selectedService.duration}.</span>
+                    <span>Your documents are safe under encrypted client workspace storage. Average attorney response time is {selectedService.duration}.</span>
                   </div>
                 </div>
               )}
@@ -555,8 +474,8 @@ export default function MarketplaceSection({
                     <CreditCard className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-amber-500" size={24} />
                   </div>
                   <div className="text-center">
-                    <h3 className="font-semibold text-lg">Razorpay Checkout</h3>
-                    <p className="text-xs text-slate-400 mt-1">Contacting payment provider. Do not close or refresh this drawer...</p>
+                    <h3 className="font-semibold text-lg">Submitting Application</h3>
+                    <p className="text-xs text-slate-400 mt-1">Encrypting documents and verifying active credentials. Do not close or refresh this drawer...</p>
                   </div>
                 </div>
               )}
@@ -567,9 +486,9 @@ export default function MarketplaceSection({
                     <Check size={48} className="animate-bounce" />
                   </div>
                   <div className="text-center max-w-xs">
-                    <h3 className="font-serif-legal font-bold text-2xl mb-2">Order Confirmed!</h3>
+                    <h3 className="font-serif-legal font-bold text-2xl mb-2">Application Submitted!</h3>
                     <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                      Your business registration order has been submitted. Check the client dashboard workspace to view active filings.
+                      Your business registration application has been submitted successfully for legal review. You can track its status inside your professional dashboard.
                     </p>
                   </div>
                 </div>
@@ -610,7 +529,7 @@ export default function MarketplaceSection({
                         : "bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed"
                     }`}
                   >
-                    <span>Proceed to Pay</span>
+                    <span>Review Application</span>
                     <ArrowRight size={14} />
                   </button>
                 )}
@@ -620,8 +539,8 @@ export default function MarketplaceSection({
                     onClick={handlePayment}
                     className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-1.5 transition shadow-lg shadow-emerald-500/15 w-full justify-center"
                   >
-                    <CreditCard size={16} />
-                    <span>Pay Online (Razorpay Gateway)</span>
+                    <CheckCircle2 size={16} />
+                    <span>Submit Application for Review</span>
                   </button>
                 )}
               </div>

@@ -84,9 +84,9 @@ export default function OdrSection() {
   const [uploadedDocName, setUploadedDocName] = useState<string | null>(null);
 
   const neutralsList = [
-    { name: "Hon. Retired Justice S. Kapoor", role: "Arbitrator", exp: "22 Years", fee: "₹15,000/hearing" },
-    { name: "Advocate Meera Chawla", role: "Conciliator / Mediator", exp: "15 Years", fee: "₹8,000/hearing" },
-    { name: "Dr. Alok Varma (CA)", role: "Commercial Mediator", exp: "18 Years", fee: "₹10,000/hearing" }
+    { name: "Hon. Retired Justice S. Kapoor", role: "Arbitrator", exp: "22 Years", fee: "Contact Chambers" },
+    { name: "Advocate Meera Chawla", role: "Conciliator / Mediator", exp: "15 Years", fee: "Contact Chambers" },
+    { name: "Dr. Alok Varma (CA)", role: "Commercial Mediator", exp: "18 Years", fee: "Contact Chambers" }
   ];
 
   useEffect(() => {
@@ -343,16 +343,16 @@ export default function OdrSection() {
   };
 
   return (
-    <section className="bg-white dark:bg-[#030712] py-20 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <section className="bg-[#022c22] py-20 text-white transition-colors duration-300">
       {/* Header banner */}
-      <div className="relative overflow-hidden pb-12 border-b border-slate-200 dark:border-slate-800 mb-12">
-        <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:16px_16px]"></div>
+      <div className="relative overflow-hidden pb-12 border-b border-emerald-800/40 mb-12">
+        <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px]"></div>
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <span className="text-amber-600 dark:text-amber-400 font-semibold tracking-widest text-xs uppercase block mb-3">Online Dispute Resolution Portal</span>
-          <h2 className="text-3xl md:text-5xl font-serif-legal font-bold mb-4 text-slate-900 dark:text-white">
-            Advanced ODR & <span className="text-amber-600 dark:text-amber-400">Settlement Workspace</span>
+          <span className="text-emerald-400 font-semibold tracking-widest text-xs uppercase block mb-3">Online Dispute Resolution Portal</span>
+          <h2 className="text-3xl md:text-5xl font-serif-legal font-bold mb-4 text-white">
+            Advanced ODR & <span className="text-emerald-400">Settlement Workspace</span>
           </h2>
-          <p className="text-slate-500 dark:text-slate-400 max-w-2xl text-sm md:text-base leading-relaxed">
+          <p className="text-emerald-100/70 max-w-2xl text-sm md:text-base leading-relaxed">
             Settle corporate contract, landlord-tenant, or IP disputes completely online. Harness smart court calculators and certified professional mediators.
           </p>
         </div>
@@ -360,13 +360,13 @@ export default function OdrSection() {
 
       {/* Main ODR Workspace Container */}
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-wrap gap-2 border-b border-slate-200 dark:border-slate-800 pb-4 mb-8">
+        <div className="flex flex-wrap gap-2 border-b border-emerald-800/40 pb-4 mb-8">
           <button 
             onClick={() => { setActiveTab("rooms"); setSelectedCase(null); }}
             className={`px-5 py-3 rounded-xl text-sm font-semibold transition ${
               activeTab === "rooms" 
-                ? "bg-amber-500 text-white shadow-lg shadow-amber-500/20" 
-                : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800"
+                ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20" 
+                : "bg-emerald-950/40 border border-emerald-800/40 text-emerald-100/80 hover:border-emerald-700"
             }`}
           >
             Dispute Hearing Rooms
@@ -376,8 +376,8 @@ export default function OdrSection() {
             onClick={() => setActiveTab("settlement")}
             className={`px-5 py-3 rounded-xl text-sm font-semibold transition ${
               activeTab === "settlement" 
-                ? "bg-amber-500 text-white shadow-lg shadow-amber-500/20" 
-                : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800"
+                ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20" 
+                : "bg-emerald-950/40 border border-emerald-800/40 text-emerald-100/80 hover:border-emerald-700"
             }`}
           >
             Settlement Calculator
@@ -387,8 +387,8 @@ export default function OdrSection() {
             onClick={() => setActiveTab("courtfee")}
             className={`px-5 py-3 rounded-xl text-sm font-semibold transition ${
               activeTab === "courtfee" 
-                ? "bg-amber-500 text-white shadow-lg shadow-amber-500/20" 
-                : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800"
+                ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20" 
+                : "bg-emerald-950/40 border border-emerald-800/40 text-emerald-100/80 hover:border-emerald-700"
             }`}
           >
             Court Fee Calculator
@@ -396,7 +396,7 @@ export default function OdrSection() {
 
           <button 
             onClick={() => setActiveTab("new")}
-            className={`px-5 py-3 rounded-xl text-sm font-semibold text-amber-500 dark:text-amber-400 bg-amber-500/10 dark:bg-amber-500/5 hover:bg-amber-500/20 border border-amber-500/20 transition flex items-center gap-1.5`}
+            className={`px-5 py-3 rounded-xl text-sm font-semibold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 transition flex items-center gap-1.5`}
           >
             <Plus size={16} />
             <span>File New ODR Case</span>
@@ -996,7 +996,7 @@ export default function OdrSection() {
                   </div>
                   <button 
                     onClick={() => handleBookNeutral(n.name)}
-                    className="bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-bold py-1.5 px-3 rounded-lg self-end"
+                    className="bg-emerald-500 hover:bg-emerald-600 text-white text-[11px] font-bold py-1.5 px-3 rounded-lg self-end"
                   >
                     Confirm Appointment
                   </button>

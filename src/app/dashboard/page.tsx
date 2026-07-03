@@ -549,7 +549,7 @@ export default function DashboardPage() {
                           <span className="text-xs text-amber-500 uppercase tracking-widest font-bold">Standard Academy Bundle</span>
                           <h5 className="font-bold text-base mt-1">6-Month Access</h5>
                         </div>
-                        <span className="text-xl font-black text-slate-900 dark:text-slate-100">₹3,000</span>
+                        <span className="text-sm font-semibold text-emerald-500">Complimentary</span>
                       </div>
                       <ul className="text-xs text-slate-500 dark:text-slate-400 space-y-2 list-disc list-inside">
                         <li>Living Law Academy full lectures access</li>
@@ -558,7 +558,7 @@ export default function DashboardPage() {
                         <li>AI Document summarize limits: 50/mo</li>
                       </ul>
                       <button 
-                        onClick={() => handleBuySubscription("6-Month Academy Bundle", "₹3,000")}
+                        onClick={() => handleBuySubscription("6-Month Academy Bundle", "Complimentary")}
                         className="w-full bg-slate-950 dark:bg-white text-white dark:text-black font-semibold py-2 rounded-xl text-xs"
                       >
                         Activate Plan
@@ -573,7 +573,7 @@ export default function DashboardPage() {
                           <span className="text-xs text-amber-500 uppercase tracking-widest font-bold">Premium Counsel Bundle</span>
                           <h5 className="font-bold text-base mt-1">1-Year Access</h5>
                         </div>
-                        <span className="text-xl font-black text-slate-900 dark:text-slate-100">₹5,000</span>
+                        <span className="text-sm font-semibold text-emerald-500">Complimentary</span>
                       </div>
                       <ul className="text-xs text-slate-500 dark:text-slate-400 space-y-2 list-disc list-inside">
                         <li>All features of 6-Month plan included</li>
@@ -582,7 +582,7 @@ export default function DashboardPage() {
                         <li>Premium court-hearing diary planner</li>
                       </ul>
                       <button 
-                        onClick={() => handleBuySubscription("1-Year Premium Bundle", "₹5,000")}
+                        onClick={() => handleBuySubscription("1-Year Premium Bundle", "Complimentary")}
                         className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 rounded-xl text-xs shadow-md shadow-amber-500/10"
                       >
                         Activate Plan
@@ -838,11 +838,11 @@ export default function DashboardPage() {
                           <div className="space-y-3">
                             <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold block">1 Month Tier</span>
                             <h5 className="font-bold text-base">ODR Access Only</h5>
-                            <span className="text-xl font-black text-slate-900 dark:text-slate-100 block">₹1,999</span>
+                            <span className="text-sm font-bold text-emerald-500 block">Complimentary</span>
                             <p className="text-[10px] text-slate-500 dark:text-slate-400">Basic single-month ODR dispute resolution platform usage.</p>
                           </div>
                           <button 
-                            onClick={() => handleBuyProfSubscription("1-Month ODR", "₹1,999")}
+                            onClick={() => handleBuyProfSubscription("1-Month ODR", "Complimentary")}
                             className="w-full bg-slate-950 dark:bg-white text-white dark:text-black font-semibold py-2.5 rounded-xl text-xs mt-4"
                           >
                             Activate Plan
@@ -854,11 +854,11 @@ export default function DashboardPage() {
                           <div className="space-y-3">
                             <span className="text-[10px] text-amber-500 uppercase tracking-widest font-bold block">Basic Plan</span>
                             <h5 className="font-bold text-base">3 Months Access</h5>
-                            <span className="text-xl font-black text-slate-900 dark:text-slate-100 block">₹3,000</span>
+                            <span className="text-sm font-bold text-emerald-500 block">Complimentary</span>
                             <p className="text-[10px] text-slate-500 dark:text-slate-400">Basic website built (at least 5 pages) + AI premium subscription for LL tools + full listing & ODR access.</p>
                           </div>
                           <button 
-                            onClick={() => handleBuyProfSubscription("Basic 3-Month", "₹3,000")}
+                            onClick={() => handleBuyProfSubscription("Basic 3-Month", "Complimentary")}
                             className="w-full bg-slate-950 dark:bg-white text-white dark:text-black font-semibold py-2.5 rounded-xl text-xs mt-4"
                           >
                             Activate Plan
@@ -871,11 +871,11 @@ export default function DashboardPage() {
                           <div className="space-y-3">
                             <span className="text-[10px] text-amber-500 uppercase tracking-widest font-bold block">Standard Plan</span>
                             <h5 className="font-bold text-base">6 Months Access</h5>
-                            <span className="text-xl font-black text-slate-900 dark:text-slate-100 block">₹6,000</span>
+                            <span className="text-sm font-bold text-emerald-500 block">Complimentary</span>
                             <p className="text-[10px] text-slate-500 dark:text-slate-400">10-page firm/lawyer website + all AI tools + full listing & ODR platform access.</p>
                           </div>
                           <button 
-                            onClick={() => handleBuyProfSubscription("Standard 6-Month", "₹6,000")}
+                            onClick={() => handleBuyProfSubscription("Standard 6-Month", "Complimentary")}
                             className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 rounded-xl text-xs mt-4 shadow-md shadow-amber-500/10"
                           >
                             Activate Plan
@@ -887,11 +887,11 @@ export default function DashboardPage() {
                           <div className="space-y-3">
                             <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold block">Yearly Plan</span>
                             <h5 className="font-bold text-base">12 Months Access</h5>
-                            <span className="text-xl font-black text-slate-900 dark:text-slate-100 block">₹11,000</span>
+                            <span className="text-sm font-bold text-emerald-500 block">Complimentary</span>
                             <p className="text-[10px] text-slate-500 dark:text-slate-400">15-page customized website + all AI tools + full listing & ODR access + 6 months extra subscription.</p>
                           </div>
                           <button 
-                            onClick={() => handleBuyProfSubscription("Yearly 12-Month", "₹11,000")}
+                            onClick={() => handleBuyProfSubscription("Yearly 12-Month", "Complimentary")}
                             className="w-full bg-slate-950 dark:bg-white text-white dark:text-black font-semibold py-2.5 rounded-xl text-xs mt-4"
                           >
                             Activate Plan
@@ -960,8 +960,8 @@ export default function DashboardPage() {
                     <span className="text-xl font-bold">{odrCases.length}</span>
                   </div>
                   <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl">
-                    <span className="text-[9px] uppercase tracking-wider text-slate-400 block font-semibold">Filing Revenue</span>
-                    <span className="text-xl font-bold text-emerald-500">₹{(clientRegs.reduce((a, b) => a + b.feePaid, 0)).toLocaleString("en-IN")}</span>
+                    <span className="text-[9px] uppercase tracking-wider text-slate-400 block font-semibold">Active Applications</span>
+                    <span className="text-xl font-bold text-emerald-500">{clientRegs.length}</span>
                   </div>
                   <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl">
                     <span className="text-[9px] uppercase tracking-wider text-slate-400 block font-semibold">Stamp Duty Orders</span>
